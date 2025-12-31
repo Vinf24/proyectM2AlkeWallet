@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body class="overflow-y-scroll">
+    <div class="navbar fixed-top position-relative py-3">
+        <a class="btn btn-outline-primary position-absolute top-0 end-0 me-4 mt-3" href="../index.html"
+            id="btnLogout">Logout</a>
+    </div>
+    <div id="dlgOverlay" class="dlgOverlay d-none">
+        <div class="alert alert-warning m-auto p-4 d-flex flex-column gap-1" role="alert">
+            <p class="mb-2">¿Seguro que deseas salir?</p>
+            <div class="d-flex justify-content-center gap-2">
+                <button id="goLogout" class="btn btn-danger btn-sm">Sí, salir</button>
+                <button id="cancelLogout" class="btn btn-secondary btn-sm">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <div class="container w-75 my-5">
+        <div class="display-2 fw-bold mb-5">Últimos Movimientos</div>
+        <div class="mb-3 w-50">
+            <label class="form-label fw-bold">Filtrar por tipo:</label>
+            <select id="filtroTipo" class="form-select">
+                <option value="Todos">Todos</option>
+                <option value="Depósito">Depósito</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Compra">Compra</option>
+            </select>
+        </div>
+        <div class="border rounded-3 bg-light">
+            <table class="table table-light table-striped">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Monto</th>
+                        <th>Fecha</th>
+                    </tr>
+                <tbody id="historial">
+                    <tr>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <button class="btn btn-primary ms-3 mt-3" id="limpiar">Limpiar Historial</button>
+        </div>
+        <div class="text-center mt-2">
+            <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al Menú
+                Principal</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

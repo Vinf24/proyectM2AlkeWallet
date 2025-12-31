@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body class="overflow-y-scroll">
+    <div class="navbar fixed-top position-relative py-3">
+        <a class="btn btn-outline-primary position-absolute top-0 end-0 me-4 mt-3" href="../index.html"
+            id="btnLogout">Logout</a>
+    </div>
+    <div id="dlgOverlay" class="dlgOverlay d-none">
+        <div class="alert alert-warning m-auto p-4 d-flex flex-column gap-1" role="alert">
+            <p class="mb-2">¿Seguro que deseas salir?</p>
+            <div class="d-flex justify-content-center gap-2">
+                <button id="goLogout" class="btn btn-danger btn-sm">Sí, salir</button>
+                <button id="cancelLogout" class="btn btn-secondary btn-sm">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <div class="container w-75 my-5">
+        <div class="display-2 fw-bold pb-4">Depositar</div>
+        <form class="border p-4 rounded-3 bg-light">
+            <div class="form-group mb-3">
+                <label for="amount" class="mb-1">Monto a depositar:</label>
+                <input type="number" id="amount" class="form-control" placeholder="Ingrese monto">
+            </div>
+            <h2 class="mb-3 fw-normal" style=font-size:20px>Saldo Actual:</h2>
+            <div class="row mx-auto">
+                <input type="text" class="fs-4 fw-bold form-control w-75" id="saldo" disabled>
+                <p class="fs-4 fw-bold w-25 my-auto">$</p>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3 entra" id="btnDeposit">Realizar depósito</button>
+        </form>
+        <div id="dlgDeposit" class="d-none w-100 mt-2">
+            <div
+                class="alert alert-success alert-dismissible mb-0 p-2 pb-2 px-3 d-flex flex-column gap-1 justify-content-center">
+                <button type="button" class="btn-close p-2"></button>
+                <p id="depositOk" class="m-0 fw-bold text-center"></p>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al Menú
+                Principal</a>
+        </div>
+    </div>
+
+    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
