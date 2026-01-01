@@ -16,7 +16,6 @@ const $closeForm = $("#closeForm");
 const $formAddContact = $("#formAddContact");
 
 const $envio = $("#envio");
-const $contactDel = $("#contactDel");
 const $historial = $("#historial");
 
 const $contactInput = $("#contact");
@@ -236,12 +235,6 @@ $btnSend.on("click", function (e) {
 function cargarContactos() {
 
     const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-
-    $contactDel.empty().append(`<option value="" disabled selected>Seleccione un Contacto</option>`);
-
-    $.each(contactos, function (index, contacto) {
-        $contactDel.append(`<option value="${index}">${contacto.alias}</option>`)
-    });
 }
 
 $cancelForm.on("click", function () {
@@ -323,8 +316,6 @@ $(document).ready(function () {
     $btnDelete.on("click", function (e) {
         e.preventDefault();
 
-        if (!$contactDel.length) return;
-
         cargarContactos();
         $dlgDelete.removeClass("d-none");
     });
@@ -337,27 +328,32 @@ $(document).ready(function () {
         e.preventDefault();
 
         const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-        const idx = $contactDel.prop("selectedIndex");
-
         const $dlgDelData = $("#dlgDelData");
 
-        $contactDel.on("change", function () {
-            $dlgDelUser.addClass("d-none");
-        });
-
-        if (idx === 0) {
-            $dlgDelData.text("Seleccione un contacto para eliminar");
-            $dlgDelUser.removeClass("d-none");
+        if (!contactoSeleccionado) {
+            $dlgUser.removeClass("d-none");
+            $("#dlgData").text("Seleccione un contacto");
             return;
         }
 
-        contactos.splice(idx - 1, 1);
-        localStorage.setItem("contactos", JSON.stringify(contactos));
+        const contactosRestantes = contactos.filter(c => c.cuenta !== contactoSeleccionado.cuenta);
 
-        $dlgDelete.addClass("d-none");
-        cargarContactos();
+        localStorage.setItem("contactos", JSON.stringify(contactosRestantes));
+
+        $dlgDelUser.removeClass("d-none");
+        $dlgDelData.text(`${contactoSeleccionado.alias} eliminado con éxito.`);
+
+        setTimeout(function () {
+            $dlgDelete.addClass("d-none");
+            cargarContactos();
+            $contactInput.val("");
+            $contactList.empty();
+            contactoSeleccionado = null;
+            return;
+        }, 2000);
+
+
     });
-
 });
 
 $formAddContact.on("submit", function (e) {
@@ -433,7 +429,7 @@ function filtrarContactos(filtro = "") {
         );
 
         $contactList.append(`
-        <li class="list-group-item list-group-item-action"
+        <li class="list-group-item list-group-item-action contact-item"
             data-index="${indexReal}">
             <strong>${contacto.alias}</strong><br>
             <small>${contacto.nombre} ${contacto.apellido}</small>
@@ -456,14 +452,14 @@ $contactInput.on("input", function () {
     $contactList.removeClass("d-none");
 });
 
-$contactList.on("click", "li", function () {
+$contactList.on("click", ".contact-item", function () {
     const index = $(this).data("index");
     const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
 
     contactoSeleccionado = contactos[index];
 
     // Feedback visual
-    $contactList.find("li").removeClass("active");
+    $contactList.find(".contact-item").removeClass("active");
     $(this).addClass("active");
 
     // Mostrar botón Enviar
