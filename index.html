@@ -26,12 +26,11 @@
             <p class="text-center my-0 opacity-75">¿no tienes una cuenta?</p>
             <hr class="mt-1">
             <div class="container text-center">
-                <button class="btn btn-outline-primary my-2 mx-auto" data-bs-toggle="modal"
-                    data-bs-target="#registerForm">
+                <button class="btn btn-outline-primary my-2 mx-auto" data-bs-toggle="modal" data-bs-target="#registro">
                     Registrarse
                 </button>
             </div>
-            <div class="modal fade" id="registerForm" tabindex="-1">
+            <div class="modal fade" id="registro" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-light">
@@ -39,7 +38,7 @@
                             <button id="closeForm" type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="formAddContact">
+                            <form id="registerForm">
                                 <div class="row">
                                     <div class="mb-3 w-50">
                                         <label for="nombre" class="form-label">Nombre:</label>
@@ -53,30 +52,34 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 w-75">
-                                    <label for="cuenta" class="form-label">N° de CBU:</label>
-                                    <input type="text" id="cuenta" inputmode="numeric" pattern="\d{8}"
-                                        class="form-control" placeholder="01234567" required>
-                                </div>
-                                <div class="mb-3 w-75">
                                     <label for="nombre" class="form-label">Alias:</label>
                                     <input type="text" id="alias" class="form-control" placeholder="alias..." required>
                                 </div>
                                 <div class="mb-3 w-75">
-                                    <label for="nombre" class="form-label">Nombre del Banco:</label>
-                                    <input type="text" id="banco" class="form-control" placeholder="banco..." required>
-                                </div>
-                                <div class="mb-3 w-75">
-                                    <label for="email" class="form-label">Correo Electrónico:</label>
-                                    <input type="email" id="email" class="form-control"
+                                    <label for="regEmail" class="form-label">Correo Electrónico:</label>
+                                    <input type="email" id="regEmail" class="form-control"
                                         placeholder="correo electrónico..." required>
                                 </div>
                                 <div class="mb-3 w-75">
-                                    <label for="contraseña" class="form-label">Contraseña:</label>
-                                    <input type="password" id="contraseña" class="form-control" placeholder="contraseña"
+                                    <label for="regClave" class="form-label">Contraseña:</label>
+                                    <input type="password" id="regClave" class="form-control" placeholder="contraseña"
                                         required>
                                 </div>
-                                <button class="btn btn-primary" type="submit" id="addContact">Guardar Contacto</button>
+                                <div class="mb-3 w-75">
+                                    <label for="regClaveRepeat" class="form-label">Confirme su Contraseña:</label>
+                                    <input type="password" id="regClaveRepeat" class="form-control"
+                                        placeholder="repetir contraseña" required>
+                                </div>
+                                <button class="btn btn-primary" type="submit" id="register">Registrarse</button>
                             </form>
+                            <div id="dlgRegister" class="dlgOverlay d-none">
+                                <div class="alert alert-warning m-auto p-3 d-flex flex-column gap-1" role="alert">
+                                    <p class="mb-2 display-6 fw-bold" id="dlgRegisterData"></p>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <button id="goRegister" class="btn btn-danger btn-sm">Entendido</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button id="cancelForm" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

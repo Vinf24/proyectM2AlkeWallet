@@ -14,6 +14,7 @@ const $cancelForm = $("#cancelForm");
 const $closeForm = $("#closeForm");
 
 const $formAddContact = $("#formAddContact");
+const $registro = $("#registro")
 
 const $envio = $("#envio");
 const $historial = $("#historial");
@@ -59,6 +60,69 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+
+    const $dlgRegister = $("#dlgRegister");
+    const $dlgRegisterData = $("#dlgRegisterData");
+    const $goRegister = $("#goRegister");
+
+    if ($registerForm.length) {
+        $registerForm.on("submit", function (e) {
+            e.preventDefault();
+
+            const nombre = $("#nombre").val().trim();
+            const apellido = $("#apellido").val().trim();
+            const email = $("#regEmail").val().trim();
+            const clave = $("#regClave").val().trim();
+            const claveRepeat = $("#regClaveRepeat").val().trim();
+            const alias = $("#alias").val().trim();
+
+            const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+            const existe = usuarios.some(u => u.email === email);
+            const claveOk = clave === claveRepeat;
+
+            if (existe) {
+                $dlgRegisterData.text("Correo ya existente");
+                $dlgRegister.removeClass("d-none");
+                return;
+            }
+
+            if (!claveOk) {
+                $dlgRegisterData.text("Confirme la contraseña");
+                $dlgRegister.removeClass("d-none");
+                return;
+            }
+
+            if (!this.checkValidity()) {
+                this.reportValidity();
+                return;
+            }
+
+            usuarios.push({
+                nombre,
+                apellido,
+                email,
+                clave,
+                alias
+            });
+
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+            this.reset();
+
+            cargarUsuarios();
+
+            const modal = bootstrap.Modal.getInstance($("#registro")[0]);
+            modal.hide();
+        });
+    }
+
+    $goRegister.on("click", function () {
+        $dlgRegister.addClass("d-none");
+    });
+
+});
 
 function mostrarLeyenda($btn) {
     const $leyenda = $("<div>")
@@ -76,8 +140,6 @@ $(document).ready(function () {
     const $goLogout = $("#goLogout");
     const $cancelLogout = $("#cancelLogout");
     const $dlgLogout = $("#dlgOverlay");
-
-
 
     $btnLogout.on("click", function (e) {
         e.preventDefault();
@@ -99,19 +161,27 @@ $(document).ready(function () {
     const $userPassword = $("#clave");
     const $dlgLogin = $("#dlgLogin");
     const $goLogin = $("#goLogin");
+    const $dlgLoginData = $("#dlgLoginData");
+
 
 
     if ($loginForm.length) {
         $loginForm.on("submit", function (e) {
             e.preventDefault();
 
-            if ($userEmail.val() === "correo@correcto.com" && $userPassword.val() === "1234") {
+            const email = $userEmail.val().trim();
+            const clave = $userPassword.val().trim();
+
+            const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+            const usuario = usuarios.find(u => (u.email === email || email === "correo@admin.com") && (u.clave === clave || clave === "admin"));
+
+            if (usuario) {
                 const $leyenda = $("<div>")
                     .text("Iniciando Sesión...")
-                    .addClass(
-                        "position-fixed top-50 start-50 translate-middle bg-dark text-white p-4 rounded-3 fw-bold"
-                    )
+                    .addClass("position-fixed top-50 start-50 translate-middle bg-dark text-white p-4 rounded-3 fw-bold")
                     .css("z-index", "9999");
+
                 $("body").append($leyenda);
 
                 setTimeout(function () {
@@ -119,7 +189,10 @@ $(document).ready(function () {
                 }, 1000);
 
             } else {
+                $dlgLoginData.text("Datos Incorrectos:")
                 $dlgLogin.removeClass("d-none");
+                $userEmail.val("");
+                $userPassword.val("");
             }
         });
     }
@@ -235,6 +308,11 @@ $btnSend.on("click", function (e) {
 function cargarContactos() {
 
     const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+}
+
+function cargarUsuarios() {
+
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 }
 
 $cancelForm.on("click", function () {
@@ -397,6 +475,7 @@ $entra.add($sale).on("click", function () {
 $(document).ready(function () {
     cargarContactos();
     cargarHistorial();
+    cargarUsuarios();
 });
 
 $("#limpiar").on("click", function () {

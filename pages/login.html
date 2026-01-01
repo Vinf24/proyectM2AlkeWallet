@@ -25,12 +25,13 @@
 
             <button class="btn btn-primary" type="submit" id="btnLogin" href=""
                 data-title="Iniciando Sesión">Login</button>
+            <hr>
+            <a href="../index.html" class="surf" data-title="crear cuenta">Crear nueva cuenta</a>
         </form>
     </div>
     <div id="dlgLogin" class="dlgOverlay d-none">
-        <div class="alert alert-warning m-auto p-4 d-flex flex-column gap-1" role="alert">
-            <p class="mb-2 display-6 fw-bold">Datos Incorrectos:</p>
-            <hr>
+        <div class="alert alert-warning m-auto p-3 d-flex flex-column gap-1" role="alert">
+            <p class="mb-2 display-6 fw-bold" id="dlgLoginData"></p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="goLogin" class="btn btn-danger btn-sm">Entendido</button>
             </div>
