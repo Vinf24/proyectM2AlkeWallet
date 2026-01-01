@@ -18,6 +18,7 @@ const $registro = $("#registro")
 
 const $envio = $("#envio");
 const $historial = $("#historial");
+const $dlgHistorial = $("#dlgHistorial");
 
 const $contactInput = $("#contact");
 const $contactList = $("#contactList");
@@ -29,6 +30,7 @@ const $sale = $(".sale");
 
 $filtroTipo = $("#filtroTipo");
 const $limpiar = $("#limpiar");
+const $limpiarUsuarios = $("#limpiarUsuarios");
 
 let nuevoSaldo = "0";
 
@@ -478,9 +480,33 @@ $(document).ready(function () {
     cargarUsuarios();
 });
 
-$("#limpiar").on("click", function () {
-    localStorage.removeItem("historial");
-    cargarHistorial();
+$(document).ready(function () {
+
+    const $btnDelHistorial = $("#btnDelHistorial");
+    const $cancelDelHistorial = $("#cancelDelHistorial");
+
+    $("#limpiar").on("click", function () {
+
+        $dlgHistorial.removeClass("d-none");
+    });
+
+    $cancelDelHistorial.on("click", function () {
+        $dlgHistorial.addClass("d-none");
+    });
+
+    $btnDelHistorial.on("click", function (e) {
+        e.preventDefault();
+
+        localStorage.removeItem("historial");
+        cargarHistorial();
+        $dlgHistorial.addClass("d-none");
+
+    });
+});
+
+$("#limpiarUsuarios").on("click", function () {
+    localStorage.removeItem("usuarios");
+    cargarUsuarios();
 });
 
 function filtrarContactos(filtro = "") {

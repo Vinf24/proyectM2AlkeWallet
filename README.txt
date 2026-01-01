@@ -11,5 +11,5 @@ Objetivos menos prioritarios:
 
 - intentar colocar un gráfico de saldo dentro de menu.html.
 - límite de transacciones visibles en el historial, dentro de transactions.html
-- opción "limpiar historial
-- botón eliminar contacto, que tome el contacto seleccionado de la lista, básicamente, al desplegar la opcón "Enviar" en sendmoney.html, qu etambién se ofrezca eliminarlo.
+- opción "limpiar historial"
+- botón eliminar contacto, que tome el contacto seleccionado de la lista, básicamente, al desplegar la opcón "Enviar" en sendmoney.html, que también se ofrezca eliminarlo.
