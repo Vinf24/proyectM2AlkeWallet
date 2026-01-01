@@ -25,17 +25,19 @@
         </div>
     </div>
 
-    <div class="container w-75 my-5">
+    <div class="container w-75 my-4">
         <div class="display-2 fw-bold pb-5">Menú Principal</div>
-        <div class="bg-light p-3 rounded-3 border">
+        <div class="bg-light py-2 px-3 rounded-3 border">
             <h3>Dinero en cuenta:</h3>
             <div class="row w-75 mx-auto">
-                <input type="text" class="fs-1 fw-bold form-control w-75" id="saldo" disabled>
+                <input type="text" class="fs-1 fw-bold form-control w-75 py-0" id="saldo" disabled>
                 <p class="fs-1 fw-bold w-25 my-auto">$</p>
             </div>
-
         </div>
-        <div class="mx-auto w-50 row gap-2 mt-4">
+        <div>
+            <canvas id="saldoChart" height="200"></canvas>
+        </div>
+        <div class="mx-auto w-75 row gap-2 mt-4">
             <a href="/pages/deposit.html" class="btn btn-primary surf" data-title="Depositar">Depositar</a>
             <a href="/pages/sendmoney.html" class="btn btn-primary surf" data-title="Enviar Dinero">Enviar Dinero</a>
             <a href="/pages/transactions.html" class="btn btn-primary surf" data-title="Últimos Movimientos">Últimos
@@ -47,6 +49,7 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/script.js"></script>
 </body>
 

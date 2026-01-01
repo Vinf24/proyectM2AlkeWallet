@@ -15,6 +15,8 @@ const $closeForm = $("#closeForm");
 
 const $formAddContact = $("#formAddContact");
 const $registro = $("#registro")
+const $delAdmin = $("#delAdmin");
+const $dlgDelAdmin = $("#dlgDelAdmin");
 
 const $envio = $("#envio");
 const $historial = $("#historial");
@@ -24,6 +26,7 @@ const $contactInput = $("#contact");
 const $contactList = $("#contactList");
 
 let contactoSeleccionado = null;
+let saldoChartInstance = null;
 
 const $entra = $(".entra");
 const $sale = $(".sale");
@@ -279,9 +282,10 @@ $btnSend.on("click", function (e) {
     localStorage.setItem("saldo", nuevoSaldo);
 
     let movimientos = JSON.parse(localStorage.getItem("historial")) || [];
+
     movimientos.push({
         cliente: contactoSeleccionado.alias,
-        monto: -monto,
+        monto: -(monto + cobroServicio),
         fecha: new Date().toLocaleDateString("es-CL"),
         tipo: "Transferencia"
     });
@@ -497,10 +501,18 @@ $(document).ready(function () {
     $btnDelHistorial.on("click", function (e) {
         e.preventDefault();
 
+        const saldoActual = Number(localStorage.getItem("saldo")) || 0;
+        localStorage.setItem("saldoBase", saldoActual);
+
+
         localStorage.removeItem("historial");
         cargarHistorial();
+        dibujarGraficoSaldo();
         $dlgHistorial.addClass("d-none");
 
+        setTimeout(function () {
+            window.location.href = "../pages/menu.html";
+        }, 2000);
     });
 });
 
@@ -574,4 +586,117 @@ $contactList.on("click", ".contact-item", function () {
 $filtroTipo.on("change", function () {
     const tipo = $(this).val();
     cargarHistorial(tipo);
+});
+
+$(document).ready(function () {
+
+    const $btnDelAdmin = $("#btnDelAdmin");
+    const $cancelDelAdmin = $("#cancelDelAdmin");
+
+    let mouseEncima = false;
+
+    $delAdmin.on("mouseenter", function () {
+        mouseEncima = true;
+    });
+
+    $delAdmin.on("mouseleave", function () {
+        mouseEncima = false;
+    });
+
+    $(document).on("keydown", function (e) {
+        if (!mouseEncima) return;
+
+        if (e.key === "Enter") {
+            $dlgDelAdmin.removeClass("d-none");
+        }
+    })
+
+    $cancelDelAdmin.on("click", function () {
+        $dlgDelAdmin.addClass("d-none");
+    });
+
+    $btnDelAdmin.on("click", function (e) {
+        e.preventDefault();
+
+        localStorage.removeItem("usuarios");
+        cargarUsuarios();
+        $dlgDelAdmin.addClass("d-none");
+    });
+});
+
+function obtenerDatosSaldo() {
+    const movimientos = JSON.parse(localStorage.getItem("historial")) || [];
+    const saldoBase = Number(localStorage.getItem("saldoBase")) || 0;
+
+    const labels = [];
+    const data = [];
+
+    let saldo = saldoBase;
+
+
+    // Si no hay movimientos, no dibujamos gráfico
+    if (saldoBase > 0) {
+        labels.push("Saldo Inicial");
+        data.push(saldo);
+    }
+
+    // Ahora avanzamos normalmente
+    movimientos.forEach(mov => {
+        saldo += Number(mov.monto);
+        labels.push(mov.fecha);
+        data.push(saldo);
+    });
+
+    return { labels, data };
+}
+
+function dibujarGraficoSaldo() {
+    const ctx = document.getElementById("saldoChart");
+    if (!ctx) return;
+
+    const { labels, data } = obtenerDatosSaldo();
+
+    const finalLabels = labels.length ? labels : ["Saldo"];
+    const finalData = data.length ? data : [Number(localStorage.getItem("saldo")) || 0];
+
+    if (saldoChartInstance) {
+        saldoChartInstance.data.labels = finalLabels;
+        saldoChartInstance.data.datasets[0].data = finalData;
+        saldoChartInstance.update();
+    } else {
+        saldoChartInstance = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: finalLabels,
+                datasets: [{
+                    label: "Saldo",
+                    data: finalData,
+                    tension: 0.3,
+                    fill: true,
+                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: value => `$${value}`
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+$(document).ready(function () {
+    dibujarGraficoSaldo();
 });

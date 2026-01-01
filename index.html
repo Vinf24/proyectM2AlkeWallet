@@ -14,8 +14,17 @@
     <div class="container w-75 my-5">
         <div class="container">
             <!-- Titulo Provisorio -->
-            <h1>ALKE WALLET</h1>
+            <h1 class="display-4 text-center" id="delAdmin">ALKE WALLET</h1>
             <img src="">
+        </div>
+        <div id="dlgDelAdmin" class="dlgOverlay d-none">
+            <div class="alert alert-warning m-auto p-4 d-flex flex-column gap-1" role="alert">
+                <p class="mb-2">¿Eliminar Lista Usuarios?</p>
+                <div class="d-flex justify-content-center gap-2">
+                    <button id="btnDelAdmin" class="btn btn-danger btn-sm">Sí, eliminar</button>
+                    <button id="cancelDelAdmin" class="btn btn-secondary btn-sm">Cancelar</button>
+                </div>
+            </div>
         </div>
         <div class=" my-4 border p-4 rounded-3 bg-light">
             <div class="text-center">
