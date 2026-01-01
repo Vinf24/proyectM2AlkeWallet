@@ -1,5 +1,8 @@
 const fechaData = new Date();
 
+const $registerForm = $("#registerForm");
+const $dlgSelectedContact = $("#dlgSelectedContact");
+
 const $btnSend = $("#btnSend");
 const $btnConfirm = $("#btnConfirm");
 const $dlgUser = $("#dlgUser");
@@ -444,7 +447,7 @@ $contactInput.on("input", function () {
 
     if (valor.length === 0) {
         $contactList.addClass("d-none");
-        $btnConfirm.addClass("d-none");
+        $dlgSelectedContact.removeClass("d-flex").addClass("d-none");
         contactoSeleccionado = null;
         return;
     }
@@ -464,7 +467,7 @@ $contactList.on("click", "li", function () {
     $(this).addClass("active");
 
     // Mostrar botón Enviar
-    $btnConfirm.removeClass("d-none");
+    $dlgSelectedContact.removeClass("d-none").addClass("d-flex");
 });
 
 $filtroTipo.on("change", function () {
