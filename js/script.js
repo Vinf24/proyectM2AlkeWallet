@@ -9,23 +9,23 @@ const $dlgUser = $("#dlgUser");
 const $dlgDelUser = $("#dlgDelUser");
 const $dlgDeposit = $("#dlgDeposit");
 
-const $contacto = $("#contacto input");
+const $contactoModal = $("#contactoModal input");
 const $cancelForm = $("#cancelForm");
 const $closeForm = $("#closeForm");
 
 const $formAddContact = $("#formAddContact");
-const $registro = $("#registro")
+const $registroModal = $("#registroModal")
 const $delAdmin = $("#delAdmin");
 const $dlgDelAdmin = $("#dlgDelAdmin");
 
-const $envio = $("#envio");
-const $historial = $("#historial");
+const $inputAmount = $("#inputAmount");
+const $historyTable = $("#historyTable");
 const $dlgHistorial = $("#dlgHistorial");
 
-const $contactInput = $("#contact");
+const $contactSearchInput = $("#contactSearchInput");
 const $contactList = $("#contactList");
 
-let contactoSeleccionado = null;
+let selectedContact = null;
 let saldoChartInstance = null;
 
 const $entra = $(".entra");
@@ -118,7 +118,7 @@ $(document).ready(function () {
 
             cargarUsuarios();
 
-            const modal = bootstrap.Modal.getInstance($("#registro")[0]);
+            const modal = bootstrap.Modal.getInstance($("#registroModal")[0]);
             modal.hide();
         });
     }
@@ -237,7 +237,7 @@ $(document).ready(function () {
             const nuevoSaldo = saldoActual + monto;
             localStorage.setItem("saldo", nuevoSaldo);
 
-            let movimientos = JSON.parse(localStorage.getItem("historial")) || [];
+            let movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
             movimientos.push({
                 cliente: "Propio",
                 monto: monto,
@@ -249,7 +249,7 @@ $(document).ready(function () {
                 movimientos.shift();
             }
 
-            localStorage.setItem("historial", JSON.stringify(movimientos));
+            localStorage.setItem("historyTable", JSON.stringify(movimientos));
 
             $amount.val("");
             $saldo.val(nuevoSaldo);
@@ -270,7 +270,7 @@ $(document).ready(function () {
 $btnSend.on("click", function (e) {
     e.preventDefault();
 
-    const monto = Number($envio.val());
+    const monto = Number($inputAmount.val());
     const saldoActual = Number(localStorage.getItem("saldo")) || 0;
     const cobroServicio = 500;
     const $dlgCompleted = $("#dlgCompleted");
@@ -281,27 +281,27 @@ $btnSend.on("click", function (e) {
     const nuevoSaldo = saldoActual - monto - cobroServicio;
     localStorage.setItem("saldo", nuevoSaldo);
 
-    let movimientos = JSON.parse(localStorage.getItem("historial")) || [];
+    let movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
 
     movimientos.push({
-        cliente: contactoSeleccionado.alias,
+        cliente: selectedContact.alias,
         monto: -(monto + cobroServicio),
         fecha: new Date().toLocaleDateString("es-CL"),
         tipo: "Transferencia"
     });
 
-    localStorage.setItem("historial", JSON.stringify(movimientos));
+    localStorage.setItem("historyTable", JSON.stringify(movimientos));
     cargarHistorial();
 
     if (movimientos.length > 5) {
         movimientos.shift();
-        localStorage.setItem("historial", JSON.stringify(movimientos));
+        localStorage.setItem("historyTable", JSON.stringify(movimientos));
     }
 
     $dlgSend.addClass("d-none");
-    $envio.val("");
+    $inputAmount.val("");
 
-    $sendOK.text(`$${monto} enviados a ${contactoSeleccionado.alias}.`);
+    $sendOK.text(`$${monto} enviados a ${selectedContact.alias}.`);
     $dlgCompleted.removeClass("d-none");
 
     setTimeout(function () {
@@ -330,22 +330,22 @@ $closeForm.on("click", function () {
 });
 
 function cargarHistorial(filtro = "Todos") {
-    if (!$historial.length) return;
+    if (!$historyTable.length) return;
 
-    let movimientos = JSON.parse(localStorage.getItem("historial")) || [];
-    $historial.empty();
+    let movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
+    $historyTable.empty();
 
     if (filtro !== "Todos") {
         movimientos = movimientos.filter(m => m.tipo === filtro);
     }
 
     if (movimientos.length === 0) {
-        $historial.append(`<tr><td>-</td><td>-</td><td>-</td></tr>`);
+        $historyTable.append(`<tr><td>-</td><td>-</td><td>-</td></tr>`);
         return;
     }
 
     $.each(movimientos.slice().reverse(), function (index, mov) {
-        $historial.append(`
+        $historyTable.append(`
             <tr>
                 <td>${mov.cliente}</td>
                 <td>${mov.monto}</td>
@@ -358,14 +358,14 @@ function cargarHistorial(filtro = "Todos") {
 $btnConfirm.on("click", function (e) {
     e.preventDefault();
 
-    const monto = Number($envio.val());
+    const monto = Number($inputAmount.val());
     const saldoActual = Number(localStorage.getItem("saldo")) || 0;
     const cobroServicio = 500;
     const $dlgSend = $("#dlgSend");
     const $cancelSend = $("#cancelSend");
     const $dlgData = $("#dlgData");
 
-    if (!contactoSeleccionado) {
+    if (!selectedContact) {
         $dlgUser.removeClass("d-none");
         $("#dlgData").text("Seleccione un contacto");
         return;
@@ -414,25 +414,25 @@ $(document).ready(function () {
         const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
         const $dlgDelData = $("#dlgDelData");
 
-        if (!contactoSeleccionado) {
+        if (!selectedContact) {
             $dlgUser.removeClass("d-none");
             $("#dlgData").text("Seleccione un contacto");
             return;
         }
 
-        const contactosRestantes = contactos.filter(c => c.cuenta !== contactoSeleccionado.cuenta);
+        const contactosRestantes = contactos.filter(c => c.cuenta !== selectedContact.cuenta);
 
         localStorage.setItem("contactos", JSON.stringify(contactosRestantes));
 
         $dlgDelUser.removeClass("d-none");
-        $dlgDelData.text(`${contactoSeleccionado.alias} eliminado con éxito.`);
+        $dlgDelData.text(`${selectedContact.alias} eliminado con éxito.`);
 
         setTimeout(function () {
             $dlgDelete.addClass("d-none");
             cargarContactos();
-            $contactInput.val("");
+            $contactSearchInput.val("");
             $contactList.empty();
-            contactoSeleccionado = null;
+            selectedContact = null;
             return;
         }, 2000);
 
@@ -470,7 +470,7 @@ $formAddContact.on("submit", function (e) {
 
     $("#nombre, #apellido, #cuenta, #banco, #alias").val("");
 
-    const modal = bootstrap.Modal.getInstance($("#contacto")[0]);
+    const modal = bootstrap.Modal.getInstance($("#contactoModal")[0]);
     modal.hide();
 });
 
@@ -505,7 +505,7 @@ $(document).ready(function () {
         localStorage.setItem("saldoBase", saldoActual);
 
 
-        localStorage.removeItem("historial");
+        localStorage.removeItem("historyTable");
         cargarHistorial();
         dibujarGraficoSaldo();
         $dlgHistorial.addClass("d-none");
@@ -555,13 +555,13 @@ function filtrarContactos(filtro = "") {
     });
 }
 
-$contactInput.on("input", function () {
+$contactSearchInput.on("input", function () {
     const valor = $(this).val().trim();
 
     if (valor.length === 0) {
         $contactList.addClass("d-none");
         $dlgSelectedContact.removeClass("d-flex").addClass("d-none");
-        contactoSeleccionado = null;
+        selectedContact = null;
         return;
     }
 
@@ -573,7 +573,7 @@ $contactList.on("click", ".contact-item", function () {
     const index = $(this).data("index");
     const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
 
-    contactoSeleccionado = contactos[index];
+    selectedContact = contactos[index];
 
     // Feedback visual
     $contactList.find(".contact-item").removeClass("active");
@@ -625,7 +625,7 @@ $(document).ready(function () {
 });
 
 function obtenerDatosSaldo() {
-    const movimientos = JSON.parse(localStorage.getItem("historial")) || [];
+    const movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
     const saldoBase = Number(localStorage.getItem("saldoBase")) || 0;
 
     const labels = [];
