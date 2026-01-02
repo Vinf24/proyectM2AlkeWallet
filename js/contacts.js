@@ -10,48 +10,94 @@ const $contactList = $("#contactList");
 
 let selectedContact = null;
 
-$formAddContact.on("submit", function (e) {
-    e.preventDefault();
+function validarContacto(datos, contactos) {
+    const { nombre, apellido, cuenta, banco, alias } = datos;
+    const cuentaRegex = /^\d{8}$/;
 
-    if (!this.checkValidity()) {
-        this.reportValidity();
-        return;
+    if (!nombre || !apellido) return "Ingrese nombre y apellido";
+
+    if (!alias) return "Ingrese un alias";
+
+    if (!banco) return "Ingrese el nombre del banco";
+
+    if (!cuenta) return "Ingrese el número de cuenta";
+
+    if (!cuentaRegex.test(cuenta)) return "Ingrese un número de cuenta válido";
+
+    const existe = contactos.some(u => u.cuenta === cuenta);
+    if (existe) return "Cuenta repetida en otro contacto";
+
+    return null;
+}
+
+$(document).ready(function () {
+
+    const $dlgContact = $("#dlgContact");
+    const $dlgContactData = $("#dlgContactData");
+    const $goContact = $("#goContact");
+
+    function mostrarError(mensaje) {
+        $dlgContactData.text(mensaje);
+        $dlgContact.removeClass("d-none");
+    };
+
+    if ($formAddContact.length) {
+        $formAddContact.on("submit", function (e) {
+            e.preventDefault();
+
+            const nombre = $("#nombre").val().trim();
+            const apellido = $("#apellido").val().trim();
+            const cuenta = $("#cuenta").val().trim();
+            const banco = $("#banco").val().trim();
+            const alias = $("#alias").val().trim();
+
+            const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+
+            const error = validarContacto({
+                nombre,
+                apellido,
+                cuenta,
+                banco,
+                alias
+            }, contactos);
+
+            if (error) {
+                mostrarError(error);
+                return;
+            }
+
+            contactos.push({
+                nombre,
+                apellido,
+                cuenta,
+                banco,
+                alias
+            });
+
+            localStorage.setItem("contactos", JSON.stringify(contactos));
+
+            cargarContactos();
+
+            $("#nombre, #apellido, #cuenta, #banco, #alias").val("");
+
+            const modal = bootstrap.Modal.getInstance($("#contactoModal")[0]);
+            const $dlgDelData = $("#dlgDelData");
+
+            modal.hide();
+
+            $completedDelUser.removeClass("d-none");
+            $completedDelData.text(`${alias} añadido con éxito.`);
+
+            setTimeout(function () {
+                $completedDelUser.addClass("d-none");
+                return;
+            }, 2000);
+        });
     }
 
-    const nombre = $("#nombre").val().trim();
-    const apellido = $("#apellido").val().trim();
-    const cuenta = $("#cuenta").val().trim();
-    const banco = $("#banco").val().trim();
-    const alias = $("#alias").val().trim();
-
-    const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-
-    contactos.push({
-        nombre,
-        apellido,
-        cuenta,
-        banco,
-        alias
+    $goContact.on("click", function () {
+        $dlgContact.addClass("d-none");
     });
-
-    localStorage.setItem("contactos", JSON.stringify(contactos));
-
-    cargarContactos();
-
-    $("#nombre, #apellido, #cuenta, #banco, #alias").val("");
-
-    const modal = bootstrap.Modal.getInstance($("#contactoModal")[0]);
-    const $dlgDelData = $("#dlgDelData");
-
-    modal.hide();
-
-    $completedDelUser.removeClass("d-none");
-    $completedDelData.text(`${alias} añadido con éxito.`);
-
-    setTimeout(function () {
-        $completedDelUser.addClass("d-none");
-        return;
-    }, 2000);
 });
 
 $(document).ready(function () {

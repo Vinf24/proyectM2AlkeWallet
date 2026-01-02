@@ -23,6 +23,10 @@ const $historyClean = $("#historyClean");
 
 let nuevoSaldo = "0";
 
+MAX_HISTORY = 5;
+COBRO_SERVICIO = 500;
+
+
 $dlgUser.on("click", ".btn-close", function () {
     $dlgUser.addClass("d-none");
 });
@@ -57,7 +61,8 @@ $(document).ready(function () {
                 cliente: "Propio",
                 monto: monto,
                 fecha: new Date().toLocaleDateString("es-CL"),
-                tipo: "Depósito"
+                tipo: "Depósito",
+                detalle: `+$${monto}`
             });
 
             if (movimientos.length > 5) {
@@ -141,7 +146,7 @@ $btnSend.on("click", function (e) {
 
     const monto = Number($inputAmount.val());
     const saldoActual = Number(localStorage.getItem("saldo")) || 0;
-    const cobroServicio = 500;
+    const cobroServicio = COBRO_SERVICIO;
     const $dlgCompleted = $("#dlgCompleted");
     const $dlgSend = $("#dlgSend");
     const $sendOK = $("#sendOK");
@@ -156,13 +161,14 @@ $btnSend.on("click", function (e) {
         cliente: selectedContact.alias,
         monto: -(monto + cobroServicio),
         fecha: new Date().toLocaleDateString("es-CL"),
-        tipo: "Transferencia"
+        tipo: "Transferencia",
+        detalle: `- $${monto} <span class="text-muted small ms-2">-$${cobroServicio} (tax)</span>`
     });
 
     localStorage.setItem("historyTable", JSON.stringify(movimientos));
     cargarHistorial();
 
-    if (movimientos.length > 5) {
+    if (movimientos.length > MAX_HISTORY) {
         movimientos.shift();
         localStorage.setItem("historyTable", JSON.stringify(movimientos));
     }
@@ -214,7 +220,7 @@ function cargarHistorial(filtro = "Todos") {
         $historyTable.append(`
             <tr>
                 <td>${mov.cliente}</td>
-                <td>${mov.monto}</td>
+                <td>${mov.detalle}</td>
                 <td>${mov.fecha}</td>
             </tr>
             `);
@@ -237,7 +243,7 @@ $btnConfirm.on("click", function (e) {
         return;
     }
 
-    if (isNaN(monto) || monto <= 1000) {
+    if (isNaN(monto) || monto < 1000) {
         $dlgUser.removeClass("d-none");
         $dlgData.text("Ingrese un monto válido");
         return;
@@ -289,7 +295,6 @@ $(document).ready(function () {
 
         localStorage.removeItem("historyTable");
         cargarHistorial();
-        dibujarGraficoSaldo();
         $dlgHistorial.addClass("d-none");
 
         setTimeout(function () {

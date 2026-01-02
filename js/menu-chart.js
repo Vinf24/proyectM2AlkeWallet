@@ -7,14 +7,11 @@ function obtenerDatosSaldo() {
 
     let saldo = saldoBase;
 
-
-    // Si no hay movimientos, no dibujamos gráfico
     if (saldoBase > 0) {
         labels.push("Saldo Inicial");
         data.push(saldo);
     }
 
-    // Ahora avanzamos normalmente
     movimientos.forEach(mov => {
         saldo += Number(mov.monto);
         labels.push(mov.fecha);
@@ -25,26 +22,33 @@ function obtenerDatosSaldo() {
 }
 
 function dibujarGraficoSaldo() {
-    const ctx = document.getElementById("saldoChart");
-    if (!ctx) return;
+    const canvas = document.getElementById("saldoChart");
+    if (!canvas) return;
 
     const { labels, data } = obtenerDatosSaldo();
 
-    const finalLabels = labels.length ? labels : ["Saldo"];
-    const finalData = data.length ? data : [Number(localStorage.getItem("saldo")) || 0];
+    if (labels.length === 0 || data.length === 0) {
+        canvas.style.display = "none";
+        return;
+    }
+
+    // ✔️ HAY DATOS → mostrar canvas
+    canvas.style.display = "block";
+
+    const ctx = canvas.getContext("2d");
 
     if (saldoChartInstance) {
-        saldoChartInstance.data.labels = finalLabels;
-        saldoChartInstance.data.datasets[0].data = finalData;
+        saldoChartInstance.data.labels = labels;
+        saldoChartInstance.data.datasets[0].data = data;
         saldoChartInstance.update();
     } else {
         saldoChartInstance = new Chart(ctx, {
             type: "line",
             data: {
-                labels: finalLabels,
+                labels,
                 datasets: [{
                     label: "Saldo",
-                    data: finalData,
+                    data,
                     tension: 0.3,
                     fill: true,
                     backgroundColor: "rgba(54, 162, 235, 0.2)",
@@ -54,10 +58,9 @@ function dibujarGraficoSaldo() {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        display: true
-                    }
+                    legend: { display: true }
                 },
                 scales: {
                     y: {
