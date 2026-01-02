@@ -1,53 +1,34 @@
 const fechaData = new Date();
 
-const $registerForm = $("#registerForm");
-const $dlgSelectedContact = $("#dlgSelectedContact");
-
 const $btnSend = $("#btnSend");
 const $btnConfirm = $("#btnConfirm");
 const $dlgUser = $("#dlgUser");
-const $dlgDelUser = $("#dlgDelUser");
-const $dlgDeposit = $("#dlgDeposit");
 
 const $contactoModal = $("#contactoModal input");
 const $cancelForm = $("#cancelForm");
 const $closeForm = $("#closeForm");
 
-const $formAddContact = $("#formAddContact");
-const $registroModal = $("#registroModal")
-const $delAdmin = $("#delAdmin");
-const $dlgDelAdmin = $("#dlgDelAdmin");
-
 const $inputAmount = $("#inputAmount");
 const $historyTable = $("#historyTable");
 const $dlgHistorial = $("#dlgHistorial");
 
-const $contactSearchInput = $("#contactSearchInput");
-const $contactList = $("#contactList");
-
-let selectedContact = null;
 let saldoChartInstance = null;
 
 const $entra = $(".entra");
 const $sale = $(".sale");
 
 $filtroTipo = $("#filtroTipo");
-const $limpiar = $("#limpiar");
-const $limpiarUsuarios = $("#limpiarUsuarios");
+const $historyClean = $("#historyClean");
 
 let nuevoSaldo = "0";
 
 $dlgUser.on("click", ".btn-close", function () {
     $dlgUser.addClass("d-none");
-})
+});
 
 $dlgDeposit.on("click", ".btn-close", function () {
     $dlgDeposit.addClass("d-none");
-})
-
-$dlgDelUser.on("click", ".btn-close", function () {
-    $dlgDelUser.addClass("d-none");
-})
+});
 
 $(document).ready(function () {
     const $btnSurf = $(".surf");
@@ -63,70 +44,6 @@ $(document).ready(function () {
             window.location.href = $btn.attr("href");
         }, 1000);
     });
-});
-
-$(document).ready(function () {
-
-    const $dlgRegister = $("#dlgRegister");
-    const $dlgRegisterData = $("#dlgRegisterData");
-    const $goRegister = $("#goRegister");
-
-    if ($registerForm.length) {
-        $registerForm.on("submit", function (e) {
-            e.preventDefault();
-
-            const nombre = $("#nombre").val().trim();
-            const apellido = $("#apellido").val().trim();
-            const email = $("#regEmail").val().trim();
-            const clave = $("#regClave").val().trim();
-            const claveRepeat = $("#regClaveRepeat").val().trim();
-            const alias = $("#alias").val().trim();
-
-            const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-            const existe = usuarios.some(u => u.email === email);
-            const claveOk = clave === claveRepeat;
-
-            if (existe) {
-                $dlgRegisterData.text("Correo ya existente");
-                $dlgRegister.removeClass("d-none");
-                return;
-            }
-
-            if (!claveOk) {
-                $dlgRegisterData.text("Confirme la contraseña");
-                $dlgRegister.removeClass("d-none");
-                return;
-            }
-
-            if (!this.checkValidity()) {
-                this.reportValidity();
-                return;
-            }
-
-            usuarios.push({
-                nombre,
-                apellido,
-                email,
-                clave,
-                alias
-            });
-
-            localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
-            this.reset();
-
-            cargarUsuarios();
-
-            const modal = bootstrap.Modal.getInstance($("#registroModal")[0]);
-            modal.hide();
-        });
-    }
-
-    $goRegister.on("click", function () {
-        $dlgRegister.addClass("d-none");
-    });
-
 });
 
 function mostrarLeyenda($btn) {
@@ -160,112 +77,12 @@ $(document).ready(function () {
     });
 });
 
-$(document).ready(function () {
-    const $loginForm = $("#loginForm");
-    const $userEmail = $("#email");
-    const $userPassword = $("#clave");
-    const $dlgLogin = $("#dlgLogin");
-    const $goLogin = $("#goLogin");
-    const $dlgLoginData = $("#dlgLoginData");
-
-
-
-    if ($loginForm.length) {
-        $loginForm.on("submit", function (e) {
-            e.preventDefault();
-
-            const email = $userEmail.val().trim();
-            const clave = $userPassword.val().trim();
-
-            const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-            const usuario = usuarios.find(u => (u.email === email || email === "correo@admin.com") && (u.clave === clave || clave === "admin"));
-
-            if (usuario) {
-                const $leyenda = $("<div>")
-                    .text("Iniciando Sesión...")
-                    .addClass("position-fixed top-50 start-50 translate-middle bg-dark text-white p-4 rounded-3 fw-bold")
-                    .css("z-index", "9999");
-
-                $("body").append($leyenda);
-
-                setTimeout(function () {
-                    window.location.href = "../pages/menu.html";
-                }, 1000);
-
-            } else {
-                $dlgLoginData.text("Datos Incorrectos:")
-                $dlgLogin.removeClass("d-none");
-                $userEmail.val("");
-                $userPassword.val("");
-            }
-        });
-    }
-
-    $goLogin.on("click", function () {
-        $dlgLogin.addClass("d-none");
-    });
-
-});
-
-
 const $saldo = $("#saldo");
 
 if ($saldo.length) {
     const saldoGuardado = localStorage.getItem("saldo");
     $saldo.val(saldoGuardado !== null ? saldoGuardado : 0);
 }
-
-$(document).ready(function () {
-
-    const $btnDeposit = $("#btnDeposit");
-    const $amount = $("#amount");
-    const $depositOk = $("#depositOk");
-
-    if ($btnDeposit && $amount) {
-        $btnDeposit.on("click", function (e) {
-            e.preventDefault();
-
-            const monto = Number($amount.val());
-
-            if (monto <= 0) {
-                $amount.val("");
-                return;
-            }
-
-            const saldoActual = Number(localStorage.getItem("saldo")) || 0;
-            const nuevoSaldo = saldoActual + monto;
-            localStorage.setItem("saldo", nuevoSaldo);
-
-            let movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
-            movimientos.push({
-                cliente: "Propio",
-                monto: monto,
-                fecha: new Date().toLocaleDateString("es-CL"),
-                tipo: "Depósito"
-            });
-
-            if (movimientos.length > 5) {
-                movimientos.shift();
-            }
-
-            localStorage.setItem("historyTable", JSON.stringify(movimientos));
-
-            $amount.val("");
-            $saldo.val(nuevoSaldo);
-
-            $depositOk.text(`$${monto} depositados correctamente.`);
-            $dlgDeposit.removeClass("d-none");
-
-            $(".surf")[0]
-                .scrollIntoView({ behavior: "smooth", block: "start" });
-
-            setTimeout(function () {
-                window.location.href = "../pages/menu.html";
-            }, 2000);
-        });
-    }
-});
 
 $btnSend.on("click", function (e) {
     e.preventDefault();
@@ -310,14 +127,11 @@ $btnSend.on("click", function (e) {
     }, 2000);
 });
 
-
 function cargarContactos() {
-
     const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
 }
 
 function cargarUsuarios() {
-
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 }
 
@@ -385,93 +199,9 @@ $btnConfirm.on("click", function (e) {
 
     $dlgSend.removeClass("d-none");
 
-
     $cancelSend.on("click", function () {
         $dlgSend.addClass("d-none");
     });
-});
-
-$(document).ready(function () {
-    const $dlgDelete = $("#dlgDelete");
-    const $goDelete = $("#goDelete");
-    const $cancelDelete = $("#cancelDelete");
-    const $btnDelete = $("#btnDelete");
-
-    $btnDelete.on("click", function (e) {
-        e.preventDefault();
-
-        cargarContactos();
-        $dlgDelete.removeClass("d-none");
-    });
-
-    $cancelDelete.on("click", function () {
-        $dlgDelete.addClass("d-none");
-    });
-
-    $goDelete.on("click", function (e) {
-        e.preventDefault();
-
-        const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-        const $dlgDelData = $("#dlgDelData");
-
-        if (!selectedContact) {
-            $dlgUser.removeClass("d-none");
-            $("#dlgData").text("Seleccione un contacto");
-            return;
-        }
-
-        const contactosRestantes = contactos.filter(c => c.cuenta !== selectedContact.cuenta);
-
-        localStorage.setItem("contactos", JSON.stringify(contactosRestantes));
-
-        $dlgDelUser.removeClass("d-none");
-        $dlgDelData.text(`${selectedContact.alias} eliminado con éxito.`);
-
-        setTimeout(function () {
-            $dlgDelete.addClass("d-none");
-            cargarContactos();
-            $contactSearchInput.val("");
-            $contactList.empty();
-            selectedContact = null;
-            return;
-        }, 2000);
-
-
-    });
-});
-
-$formAddContact.on("submit", function (e) {
-    e.preventDefault();
-
-    if (!this.checkValidity()) {
-        this.reportValidity();
-        return;
-    }
-
-    const nombre = $("#nombre").val().trim();
-    const apellido = $("#apellido").val().trim();
-    const cuenta = $("#cuenta").val().trim();
-    const banco = $("#banco").val().trim();
-    const alias = $("#alias").val().trim();
-
-    const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-
-    contactos.push({
-        nombre,
-        apellido,
-        cuenta,
-        banco,
-        alias
-    });
-
-    localStorage.setItem("contactos", JSON.stringify(contactos));
-
-    cargarContactos();
-
-    $("#nombre, #apellido, #cuenta, #banco, #alias").val("");
-
-    const modal = bootstrap.Modal.getInstance($("#contactoModal")[0]);
-    modal.hide();
 });
 
 $entra.add($sale).on("click", function () {
@@ -489,7 +219,7 @@ $(document).ready(function () {
     const $btnDelHistorial = $("#btnDelHistorial");
     const $cancelDelHistorial = $("#cancelDelHistorial");
 
-    $("#limpiar").on("click", function () {
+    $("#historyClean").on("click", function () {
 
         $dlgHistorial.removeClass("d-none");
     });
@@ -516,187 +246,7 @@ $(document).ready(function () {
     });
 });
 
-$("#limpiarUsuarios").on("click", function () {
-    localStorage.removeItem("usuarios");
-    cargarUsuarios();
-});
-
-function filtrarContactos(filtro = "") {
-    const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-
-    $contactList.empty();
-
-    const filtrados = contactos.filter(c =>
-        c.alias.toLowerCase().includes(filtro.toLowerCase()) ||
-        c.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-        c.apellido.toLowerCase().includes(filtro.toLowerCase())
-    );
-
-    if (filtrados.length === 0) {
-        $contactList.append(`
-            <li class="list-group-item text-muted">Sin resultados</li>
-        `);
-        return;
-    }
-
-    filtrados.forEach(contacto => {
-        const indexReal = contactos.findIndex(c =>
-            c.alias === contacto.alias &&
-            c.cuenta === contacto.cuenta
-        );
-
-        $contactList.append(`
-        <li class="list-group-item list-group-item-action contact-item"
-            data-index="${indexReal}">
-            <strong>${contacto.alias}</strong><br>
-            <small>${contacto.nombre} ${contacto.apellido}</small>
-        </li>
-    `)
-    });
-}
-
-$contactSearchInput.on("input", function () {
-    const valor = $(this).val().trim();
-
-    if (valor.length === 0) {
-        $contactList.addClass("d-none");
-        $dlgSelectedContact.removeClass("d-flex").addClass("d-none");
-        selectedContact = null;
-        return;
-    }
-
-    filtrarContactos(valor);
-    $contactList.removeClass("d-none");
-});
-
-$contactList.on("click", ".contact-item", function () {
-    const index = $(this).data("index");
-    const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-
-    selectedContact = contactos[index];
-
-    // Feedback visual
-    $contactList.find(".contact-item").removeClass("active");
-    $(this).addClass("active");
-
-    // Mostrar botón Enviar
-    $dlgSelectedContact.removeClass("d-none").addClass("d-flex");
-});
-
 $filtroTipo.on("change", function () {
     const tipo = $(this).val();
     cargarHistorial(tipo);
-});
-
-$(document).ready(function () {
-
-    const $btnDelAdmin = $("#btnDelAdmin");
-    const $cancelDelAdmin = $("#cancelDelAdmin");
-
-    let mouseEncima = false;
-
-    $delAdmin.on("mouseenter", function () {
-        mouseEncima = true;
-    });
-
-    $delAdmin.on("mouseleave", function () {
-        mouseEncima = false;
-    });
-
-    $(document).on("keydown", function (e) {
-        if (!mouseEncima) return;
-
-        if (e.key === "Enter") {
-            $dlgDelAdmin.removeClass("d-none");
-        }
-    })
-
-    $cancelDelAdmin.on("click", function () {
-        $dlgDelAdmin.addClass("d-none");
-    });
-
-    $btnDelAdmin.on("click", function (e) {
-        e.preventDefault();
-
-        localStorage.removeItem("usuarios");
-        cargarUsuarios();
-        $dlgDelAdmin.addClass("d-none");
-    });
-});
-
-function obtenerDatosSaldo() {
-    const movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
-    const saldoBase = Number(localStorage.getItem("saldoBase")) || 0;
-
-    const labels = [];
-    const data = [];
-
-    let saldo = saldoBase;
-
-
-    // Si no hay movimientos, no dibujamos gráfico
-    if (saldoBase > 0) {
-        labels.push("Saldo Inicial");
-        data.push(saldo);
-    }
-
-    // Ahora avanzamos normalmente
-    movimientos.forEach(mov => {
-        saldo += Number(mov.monto);
-        labels.push(mov.fecha);
-        data.push(saldo);
-    });
-
-    return { labels, data };
-}
-
-function dibujarGraficoSaldo() {
-    const ctx = document.getElementById("saldoChart");
-    if (!ctx) return;
-
-    const { labels, data } = obtenerDatosSaldo();
-
-    const finalLabels = labels.length ? labels : ["Saldo"];
-    const finalData = data.length ? data : [Number(localStorage.getItem("saldo")) || 0];
-
-    if (saldoChartInstance) {
-        saldoChartInstance.data.labels = finalLabels;
-        saldoChartInstance.data.datasets[0].data = finalData;
-        saldoChartInstance.update();
-    } else {
-        saldoChartInstance = new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: finalLabels,
-                datasets: [{
-                    label: "Saldo",
-                    data: finalData,
-                    tension: 0.3,
-                    fill: true,
-                    backgroundColor: "rgba(54, 162, 235, 0.2)",
-                    borderColor: "rgba(54, 162, 235, 1)",
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                },
-                scales: {
-                    y: {
-                        ticks: {
-                            callback: value => `$${value}`
-                        }
-                    }
-                }
-            }
-        });
-    }
-}
-
-$(document).ready(function () {
-    dibujarGraficoSaldo();
 });
