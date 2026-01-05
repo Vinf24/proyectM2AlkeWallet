@@ -43,6 +43,11 @@ $(document).ready(function () {
         const banco = $("#banco").val().trim();
         const cuenta = $("#cuenta").val().trim();
 
+        const $dlgAlkeDetected = $("#dlgAlkeDetected");
+        const $dlgAlkeData = $("#dlgAlkeData");
+        const $goAlkeAdd = $("#goAlkeAdd");
+        const $cancelAlkeAdd = $("#cancelAlkeAdd");
+
         $("#nombre, #apellido").prop("readonly", false).removeClass("bg-light border-success border-danger");
 
         if (banco.toLowerCase() !== "alke" || cuenta.length !== 8) {
@@ -52,12 +57,21 @@ $(document).ready(function () {
         const usuarioAlke = buscarUsuarioAlkePorCuenta(cuenta);
 
         if (usuarioAlke) {
-            $("#nombre").val(usuarioAlke.nombre).prop("readonly", true).addClass("bg-light border-success");
-            $("#apellido").val(usuarioAlke.apellido).prop("readonly", true).addClass("bg-light border-success");
+            $dlgAlkeDetected.removeClass("d-none");
+            $dlgAlkeData.text(`${usuarioAlke.nombre} ${usuarioAlke.apellido}`);
+
+            $goAlkeAdd.on("click", function () {
+                $("#nombre").val(usuarioAlke.nombre).prop("readonly", true).addClass("bg-light border-success");
+                $("#apellido").val(usuarioAlke.apellido).prop("readonly", true).addClass("bg-light border-success");
+                $dlgAlkeDetected.addClass("d-none");
+            });
         } else {
             $("#nombre").val("").prop("readonly", true).addClass("bg-light border-danger");
             $("#apellido").val("").prop("readonly", true).addClass("bg-light border-danger");
         }
+        $cancelAlkeAdd.on("click", function () {
+            $dlgAlkeDetected.addClass("d-none");
+        });
     });
 
     const $dlgContact = $("#dlgContact");
