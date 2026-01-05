@@ -66,93 +66,106 @@
             </div>
         </div>
     </div>
-    <div class="container w-75 my-5">
-        <div class="display-2 fw-bold pb-4">Enviar Dinero</div>
-        <form class="border px-4 py-2 rounded-3 bg-light">
-            <div class="form-group mb-2">
-                <label class="py-2" for="contactSearchInput">Buscar en la agencia de transferencias:</label>
-                <input type="text" id="contactSearchInput" class="form-control" placeholder="Buscar contacto...">
-            </div>
-        </form>
-
-        <div class="container text-end">
-            <button class="btn btn-outline-primary my-3 me-3" data-bs-toggle="modal" data-bs-target="#contactoModal">
-                Agregar contacto
-            </button>
-        </div>
-        <div class="modal fade" id="contactoModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-light">
-                        <h4 id="formTitle" class="modal-title">Agregar contacto</h4>
-                        <button id="closeForm" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-10 col-md-9">
+                <div class="display-2 fw-bold pb-4">Enviar Dinero</div>
+                <form class="border px-4 py-2 rounded-3 bg-light">
+                    <div class="form-group mb-2">
+                        <label class="py-2" for="contactSearchInput">Buscar en la agencia de transferencias:</label>
+                        <input type="text" id="contactSearchInput" class="form-control"
+                            placeholder="Buscar contacto...">
                     </div>
-                    <div class="modal-body">
-                        <form id="formAddContact" novalidate>
-                            <div class="row">
-                                <div class="mb-3 w-50">
-                                    <label for="nombre" class="form-label">Nombre:</label>
-                                    <input type="text" id="nombre" class="form-control pe-0" placeholder="nombre..."
-                                        required>
+                </form>
+
+                <div class="container text-end">
+                    <button class="btn btn-outline-primary my-3 me-3" data-bs-toggle="modal"
+                        data-bs-target="#contactoModal">
+                        Agregar contacto
+                    </button>
+                </div>
+                <div class="modal fade" id="contactoModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-light">
+                                <h4 id="formTitle" class="modal-title">Agregar contacto</h4>
+                                <button id="closeForm" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formAddContact" novalidate>
+                                    <div class="row">
+                                        <div class="mb-3 w-50">
+                                            <label for="nombre" class="form-label">Nombre:</label>
+                                            <input type="text" id="nombre" class="form-control pe-0"
+                                                placeholder="nombre..." required>
+                                        </div>
+                                        <div class="mb-3 w-50">
+                                            <label for="nombre" class="form-label">Apellido:</label>
+                                            <input type="text" id="apellido" class="form-control pe-0"
+                                                placeholder="apellido..." required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 w-75">
+                                        <label for="cuenta" class="form-label">N° de CBU:</label>
+                                        <input type="text" id="cuenta" inputmode="numeric" pattern="\d{8}"
+                                            class="form-control" placeholder="01234567" required>
+                                    </div>
+                                    <div class="mb-3 w-75">
+                                        <label for="nombre" class="form-label">Alias:</label>
+                                        <input type="text" id="alias" class="form-control" placeholder="alias..."
+                                            required>
+                                    </div>
+                                    <div class="mb-3 w-75">
+                                        <label for="nombre" class="form-label">Nombre del Banco:</label>
+                                        <input type="text" id="banco" class="form-control" placeholder="banco..."
+                                            required>
+                                    </div>
+                                    <button class="btn btn-primary" type="submit" id="addContact">Guardar
+                                        Contacto</button>
+                                </form>
+                                <div id="dlgContact" class="dlgOverlay d-none">
+                                    <div class="alert alert-warning m-auto p-3 d-flex flex-column gap-1" role="alert">
+                                        <p class="mb-2 display-6 fw-bold" id="dlgContactData"></p>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <button id="goContact" class="btn btn-danger btn-sm">Entendido</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="mb-3 w-50">
-                                    <label for="nombre" class="form-label">Apellido:</label>
-                                    <input type="text" id="apellido" class="form-control pe-0" placeholder="apellido..."
-                                        required>
-                                </div>
                             </div>
-                            <div class="mb-3 w-75">
-                                <label for="cuenta" class="form-label">N° de CBU:</label>
-                                <input type="text" id="cuenta" inputmode="numeric" pattern="\d{8}" class="form-control"
-                                    placeholder="01234567" required>
-                            </div>
-                            <div class="mb-3 w-75">
-                                <label for="nombre" class="form-label">Alias:</label>
-                                <input type="text" id="alias" class="form-control" placeholder="alias..." required>
-                            </div>
-                            <div class="mb-3 w-75">
-                                <label for="nombre" class="form-label">Nombre del Banco:</label>
-                                <input type="text" id="banco" class="form-control" placeholder="banco..." required>
-                            </div>
-                            <button class="btn btn-primary" type="submit" id="addContact">Guardar Contacto</button>
-                        </form>
-                        <div id="dlgContact" class="dlgOverlay d-none">
-                            <div class="alert alert-warning m-auto p-3 d-flex flex-column gap-1" role="alert">
-                                <p class="mb-2 display-6 fw-bold" id="dlgContactData"></p>
-                                <div class="d-flex justify-content-center gap-2">
-                                    <button id="goContact" class="btn btn-danger btn-sm">Entendido</button>
-                                </div>
+                            <div class="modal-footer">
+                                <button id="cancelForm" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button id="cancelForm" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+
+                <form>
+                    <div class="mx-3">
+                        <label class="form-label pb-3 display-5 fw-bold">Contactos:</label>
+
+                        <ul id="contactList" class="list-group w-75 mx-auto d-none"></ul>
                     </div>
+                    <div class="border px-4 py-2 rounded-3 bg-light mt-3">
+                        <div class="form-group mb-1">
+                            <label class="pt-2 pb-1" for="inputAmount">Monto a enviar:</label>
+                            <input type="number" id="inputAmount" class="form-control" placeholder="Ingrese monto..."
+                                required>
+                            <label for="inputAmount" class="text-muted small ms-2 mt-2 mb-1 user-select-none">Mín:
+                                $1000, Tax: $500</label>
+                        </div>
+                    </div>
+                    <div class="d-none justify-content-between" id="dlgSelectedContact">
+                        <button class="btn btn-primary mt-3 sale" type="submit" id="btnConfirm">Enviar</button>
+                        <a class="btn btn-danger mt-3" id="delContact">Borrar Contacto</a>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al
+                        Menú
+                        Principal</a>
                 </div>
             </div>
-        </div>
-
-        <form>
-            <div class="mx-3">
-                <label class="form-label pb-3 display-5 fw-bold">Contactos:</label>
-
-                <ul id="contactList" class="list-group w-75 mx-auto d-none"></ul>
-            </div>
-            <div class="border px-4 py-2 rounded-3 bg-light mt-3">
-                <div class="form-group mb-1">
-                    <label class="pt-2 pb-1" for="inputAmount">Monto a enviar:</label>
-                    <input type="number" id="inputAmount" class="form-control" placeholder="Ingrese monto..." required>
-                    <p class="text-muted small ms-2 mt-2 mb-1 user-select-none">Mín: $1000, Com: $500</p>
-                </div>
-            </div>
-            <div class="d-none justify-content-between" id="dlgSelectedContact">
-                <button class="btn btn-primary mt-3 sale" type="submit" id="btnConfirm">Enviar</button>
-                <a class="btn btn-danger mt-3" id="delContact">Borrar Contacto</a>
-            </div>
-        </form>
-        <div class="text-center mt-3">
-            <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al Menú
-                Principal</a>
         </div>
     </div>
 

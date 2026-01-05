@@ -24,49 +24,44 @@
             </div>
         </div>
     </div>
-    <div class="container w-75 my-5">
-        <div class="display-2 fw-bold mb-5">Últimos Movimientos</div>
-        <div class="mb-3 w-50">
-            <label class="form-label fw-bold">Filtrar por tipo:</label>
-            <select id="filtroTipo" class="form-select">
-                <option value="Todos">Todos</option>
-                <option value="Depósito">Depósito</option>
-                <option value="Transferencia">Transferencia</option>
-                <option value="Compra">Compra</option>
-            </select>
-        </div>
-        <div class="border rounded-3 bg-light">
-            <table class="table table-light table-striped">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Detalle</th>
-                        <th>Fecha</th>
-                    </tr>
-                <tbody id="historyTable">
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div>
-            <button class="btn btn-primary ms-3 mt-3" id="historyClean">Limpiar Historial</button>
-        </div>
-        <div id="dlgHistorial" class="dlgOverlay d-none">
-            <div class="alert alert-warning m-auto p-4 d-flex flex-column gap-1" role="alert">
-                <p class="mb-2">¿Limpiar Historial?</p>
-                <div class="d-flex justify-content-center gap-2">
-                    <button id="btnDelHistorial" class="btn btn-danger btn-sm">Sí, limpiar</button>
-                    <button id="cancelDelHistorial" class="btn btn-secondary btn-sm">Cancelar</button>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-10 col-md-9">
+                <div class="display-2 fw-bold mb-5">Últimos Movimientos</div>
+                <div class="mb-3 w-50">
+                    <label class="form-label fw-bold">Filtrar por tipo:</label>
+                    <select id="filtroTipo" class="form-select">
+                        <option value="Todos">Todos</option>
+                        <option value="Depósito">Depósito</option>
+                        <option value="Transferencia">Transferencia</option>
+                        <option value="Compra">Compra</option>
+                    </select>
+                </div>
+                <div class="border rounded-3 bg-light p-3">
+                    <ul id="historyList" class="list-group list-group-flush">
+                        <li class="list-group-item text-muted text-center">
+                            No hay movimientos
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <button class="btn btn-primary ms-3 mt-3" id="historyClean">Limpiar Historial</button>
+                </div>
+                <div id="dlgHistorial" class="dlgOverlay d-none">
+                    <div class="alert alert-warning m-auto p-4 d-flex flex-column gap-1" role="alert">
+                        <p class="mb-2">¿Limpiar Historial?</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <button id="btnDelHistorial" class="btn btn-danger btn-sm">Sí, limpiar</button>
+                            <button id="cancelDelHistorial" class="btn btn-secondary btn-sm">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al
+                        Menú
+                        Principal</a>
                 </div>
             </div>
-        </div>
-        <div class="text-center mt-2">
-            <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al Menú
-                Principal</a>
         </div>
     </div>
 

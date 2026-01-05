@@ -14,8 +14,6 @@ function validarContacto(datos, contactos) {
     const { nombre, apellido, cuenta, banco, alias } = datos;
     const cuentaRegex = /^\d{8}$/;
 
-    if (!nombre || !apellido) return "Ingrese nombre y apellido";
-
     if (!alias) return "Ingrese un alias";
 
     if (!banco) return "Ingrese el nombre del banco";
@@ -27,10 +25,40 @@ function validarContacto(datos, contactos) {
     const existe = contactos.some(u => u.cuenta === cuenta);
     if (existe) return "Cuenta repetida en otro contacto";
 
+    if (banco.toLowerCase() === "alke") {
+        const usuarioAlke = buscarUsuarioAlkePorCuenta(cuenta);
+
+        if (!usuarioAlke) {
+            return "Usuario Alke inexistente"
+        }
+    } else {
+        if (!nombre || !apellido) return "Ingrese nombre y apellido";
+    }
+
     return null;
 }
 
 $(document).ready(function () {
+    $("#cuenta, #banco").on("input", function () {
+        const banco = $("#banco").val().trim();
+        const cuenta = $("#cuenta").val().trim();
+
+        $("#nombre, #apellido").prop("readonly", false).removeClass("bg-light border-success border-danger");
+
+        if (banco.toLowerCase() !== "alke" || cuenta.length !== 8) {
+            return;
+        }
+
+        const usuarioAlke = buscarUsuarioAlkePorCuenta(cuenta);
+
+        if (usuarioAlke) {
+            $("#nombre").val(usuarioAlke.nombre).prop("readonly", true).addClass("bg-light border-success");
+            $("#apellido").val(usuarioAlke.apellido).prop("readonly", true).addClass("bg-light border-success");
+        } else {
+            $("#nombre").val("").prop("readonly", true).addClass("bg-light border-danger");
+            $("#apellido").val("").prop("readonly", true).addClass("bg-light border-danger");
+        }
+    });
 
     const $dlgContact = $("#dlgContact");
     const $dlgContactData = $("#dlgContactData");
@@ -51,7 +79,12 @@ $(document).ready(function () {
             const banco = $("#banco").val().trim();
             const alias = $("#alias").val().trim();
 
-            const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+            const usuario = getUsuarioActivo();
+            const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+            if (!usuario) return;
+
+            usuario.contactos = usuario.contactos || [];
 
             const error = validarContacto({
                 nombre,
@@ -59,22 +92,31 @@ $(document).ready(function () {
                 cuenta,
                 banco,
                 alias
-            }, contactos);
+            }, usuario.contactos);
 
             if (error) {
                 mostrarError(error);
                 return;
             }
 
-            contactos.push({
-                nombre,
-                apellido,
+            let nombreFinal = nombre;
+            let apellidoFinal = apellido;
+
+            if (banco.toLowerCase() === "alke") {
+                const usuarioAlke = buscarUsuarioAlkePorCuenta(cuenta);
+                nombreFinal = usuarioAlke.nombre;
+                apellidoFinal = usuarioAlke.apellido;
+            }
+
+            usuario.contactos.push({
+                nombre: nombreFinal,
+                apellido: apellidoFinal,
                 cuenta,
                 banco,
                 alias
             });
 
-            localStorage.setItem("contactos", JSON.stringify(contactos));
+            guardarUsuario(usuario);
 
             cargarContactos();
 
@@ -120,7 +162,8 @@ $(document).ready(function () {
     $goDelete.on("click", function (e) {
         e.preventDefault();
 
-        const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+        const usuario = getUsuarioActivo();
+        const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
         const $dlgDelData = $("#dlgDelData");
 
         if (!selectedContact) {
@@ -129,9 +172,10 @@ $(document).ready(function () {
             return;
         }
 
-        const contactosRestantes = contactos.filter(c => c.cuenta !== selectedContact.cuenta);
+        usuario.contactos = (usuario.contactos || [])
+            .filter(c => c.cuenta !== selectedContact.cuenta);
 
-        localStorage.setItem("contactos", JSON.stringify(contactosRestantes));
+        guardarUsuario(usuario);
 
         $dlgDelUser.removeClass("d-none");
         $dlgDelData.text(`${selectedContact.alias} eliminado con éxito.`);
@@ -157,7 +201,10 @@ $(document).ready(function () {
 });
 
 function filtrarContactos(filtro = "") {
-    const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+    const usuario = getUsuarioActivo();
+    if (!usuario) return;
+
+    const contactos = usuario.contactos || [];
 
     $contactList.empty();
 
@@ -206,8 +253,8 @@ $contactSearchInput.on("input", function () {
 
 $contactList.on("click", ".contact-item", function () {
     const index = $(this).data("index");
-    const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-
+    const usuario = getUsuarioActivo();
+    const contactos = usuario.contactos || [];
     selectedContact = contactos[index];
 
     // Feedback visual
@@ -217,3 +264,8 @@ $contactList.on("click", ".contact-item", function () {
     // Mostrar botón Enviar
     $dlgSelectedContact.removeClass("d-none").addClass("d-flex");
 });
+
+function buscarUsuarioAlkePorCuenta(cuenta) {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    return usuarios.find(u => u.numeroCuentaAlke === Number(cuenta)) || null;
+}

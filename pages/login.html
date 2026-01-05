@@ -11,22 +11,6 @@
 </head>
 
 <body class="overflow-y-scroll">
-    <div class="container w-75 mt-5">
-        <div class="display-2 fw-bold">Login</div>
-        <form id="loginForm" class="form-group my-4 border p-2 rounded-3 bg-light">
-            <div class="mb-3">
-                <label class="form-label mb-1" for="emailLogin">Email:</label>
-                <input class="form-control" type="email" id="emailLogin" placeholder="correo@dom" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label mb-1" for="claveLogin">Password:</label>
-                <input class="form-control" type="password" id="claveLogin" placeholder="contraseña" required>
-            </div>
-
-            <button class="btn btn-primary" type="submit" id="btnLogin" href=""
-                data-title="Iniciando Sesión">Login</button>
-        </form>
-    </div>
     <div id="dlgLogin" class="dlgOverlay d-none">
         <div class="alert alert-warning m-auto p-3 d-flex flex-column gap-1" role="alert">
             <p class="mb-2 display-6 fw-bold" id="dlgLoginData"></p>
@@ -35,6 +19,26 @@
             </div>
         </div>
     </div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-10 col-md-9">
+                <div class="display-2 fw-bold">Login</div>
+                <form id="loginForm" class="form-group my-4 border p-2 rounded-3 bg-light" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label mb-1" for="emailLogin">Email:</label>
+                        <input class="form-control" type="email" id="emailLogin" placeholder="correo@dom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label mb-1" for="claveLogin">Password:</label>
+                        <input class="form-control" type="password" id="claveLogin" placeholder="contraseña" required>
+                    </div>
+                    <button class="btn btn-primary" type="submit" id="btnLogin" href=""
+                        data-title="Iniciando Sesión">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <hr class="mb-1 w-75 mx-auto mt-0">
     <p class="text-center my-0 opacity-75">¿no tienes una cuenta?</p>
     <hr class="mt-1 w-75 mx-auto">

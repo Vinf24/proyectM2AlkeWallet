@@ -24,6 +24,24 @@ function validarRegistro(datos, usuarios) {
     return null;
 }
 
+function generarIdUnico(usuarios) {
+    if (!usuarios.length) return 1;
+    return Math.max(...usuarios.map(u => u.id || 0)) + 1;
+}
+
+function generarNumeroCuentaUnico(usuarios) {
+    let numero;
+    let existe;
+
+    do {
+        numero = Math.floor(10000000 + Math.random() * 90000000);
+
+        existe = usuarios.some(u => u.numeroCuentaAlke === numero);
+    } while (existe);
+
+    return numero;
+}
+
 $(document).ready(function () {
 
     const $dlgRegister = $("#dlgRegister");
@@ -62,7 +80,13 @@ $(document).ready(function () {
                 return;
             }
 
+            const id = generarIdUnico(usuarios);
+
+            const numeroCuentaAlke = generarNumeroCuentaUnico(usuarios);
+
             usuarios.push({
+                id,
+                numeroCuentaAlke: numeroCuentaAlke,
                 nombre,
                 apellido,
                 email,
@@ -74,8 +98,6 @@ $(document).ready(function () {
 
             this.reset();
 
-            cargarUsuarios();
-
             const modal = bootstrap.Modal.getInstance($("#registroModal")[0]);
             modal.hide();
         });
@@ -86,4 +108,3 @@ $(document).ready(function () {
     });
 
 });
-

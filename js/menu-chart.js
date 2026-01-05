@@ -1,16 +1,18 @@
 function obtenerDatosSaldo() {
-    const movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
-    const saldoBase = Number(localStorage.getItem("saldoBase")) || 0;
+    const usuario = getUsuarioActivo();
+    if (!usuario) return { labels: [], data: [] };
+
+    const movimientos = usuario.historial || [];
+    const saldoBase = Number(usuario.saldoBase) || 0;
 
     const labels = [];
     const data = [];
 
     let saldo = saldoBase;
 
-    if (saldoBase > 0) {
-        labels.push("Saldo Inicial");
-        data.push(saldo);
-    }
+    // siempre partimos desde 0
+    labels.push("Saldo Inicial");
+    data.push(saldo);
 
     movimientos.forEach(mov => {
         saldo += Number(mov.monto);
@@ -76,4 +78,29 @@ function dibujarGraficoSaldo() {
 
 $(document).ready(function () {
     dibujarGraficoSaldo();
+});
+
+const usuario = getUsuarioActivo();
+if (!usuario) {
+    window.location.href = "../pages/login.html";
+}
+
+$(document).ready(function () {
+    const usuario = getUsuarioActivo();
+    if (!usuario) return;
+
+    $("#bienvenida").text(`Bienvenido ${usuario.alias}`);
+    $("#numeroCuentaAlke").text(`Cuenta: ${usuario.numeroCuentaAlke}`);
+});
+
+$("#btnCopyCuenta").on("click", function () {
+    const cuenta = getUsuarioActivo()?.numeroCuentaAlke;
+    if (!cuenta) return;
+
+    navigator.clipboard.writeText(cuenta.toString());
+
+    $(this).text("Copiado ✔");
+    setTimeout(() => {
+        $(this).text("Copiar");
+    }, 1500);
 });

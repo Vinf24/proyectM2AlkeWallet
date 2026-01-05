@@ -32,7 +32,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         localStorage.removeItem("usuarios");
-        cargarUsuarios();
+
         $dlgDelAdmin.addClass("d-none");
     });
 });

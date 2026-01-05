@@ -10,7 +10,7 @@ const $cancelForm = $("#cancelForm");
 const $closeForm = $("#closeForm");
 
 const $inputAmount = $("#inputAmount");
-const $historyTable = $("#historyTable");
+const $historyList = $("#historyList");
 const $dlgHistorial = $("#dlgHistorial");
 
 let saldoChartInstance = null;
@@ -18,13 +18,13 @@ let saldoChartInstance = null;
 const $entra = $(".entra");
 const $sale = $(".sale");
 
-$filtroTipo = $("#filtroTipo");
+const $filtroTipo = $("#filtroTipo");
 const $historyClean = $("#historyClean");
 
 let nuevoSaldo = "0";
 
-MAX_HISTORY = 5;
-COBRO_SERVICIO = 500;
+const MAX_HISTORY = 5;
+const COBRO_SERVICIO = 500;
 
 
 $dlgUser.on("click", ".btn-close", function () {
@@ -52,12 +52,16 @@ $(document).ready(function () {
                 return;
             }
 
-            const saldoActual = Number(localStorage.getItem("saldo")) || 0;
+            const usuario = getUsuarioActivo();
+            const saldoActual = usuario.saldo || 0;
             const nuevoSaldo = saldoActual + monto;
-            localStorage.setItem("saldo", nuevoSaldo);
+            usuario.saldo = nuevoSaldo;
 
-            let movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
-            movimientos.push({
+            guardarUsuario(usuario);
+
+            usuario.historial = usuario.historial || [];
+
+            usuario.historial.push({
                 cliente: "Propio",
                 monto: monto,
                 fecha: new Date().toLocaleDateString("es-CL"),
@@ -65,11 +69,11 @@ $(document).ready(function () {
                 detalle: `+$${monto}`
             });
 
-            if (movimientos.length > 5) {
-                movimientos.shift();
+            if (usuario.historial.length > MAX_HISTORY) {
+                usuario.historial.shift();
             }
 
-            localStorage.setItem("historyTable", JSON.stringify(movimientos));
+            guardarUsuario(usuario);
 
             $amount.val("");
             $saldo.val(nuevoSaldo);
@@ -130,6 +134,7 @@ $(document).ready(function () {
     });
 
     $goLogout.on("click", function () {
+        sessionStorage.removeItem("usuarioActivo");
         window.location.href = $btnLogout.attr("href");
     });
 });
@@ -137,27 +142,34 @@ $(document).ready(function () {
 const $saldo = $("#saldo");
 
 if ($saldo.length) {
-    const saldoGuardado = localStorage.getItem("saldo");
-    $saldo.val(saldoGuardado !== null ? saldoGuardado : 0);
+    const usuario = getUsuarioActivo();
+    $saldo.val(usuario?.saldo || 0);
 }
 
 $btnSend.on("click", function (e) {
     e.preventDefault();
 
     const monto = Number($inputAmount.val());
-    const saldoActual = Number(localStorage.getItem("saldo")) || 0;
     const cobroServicio = COBRO_SERVICIO;
     const $dlgCompleted = $("#dlgCompleted");
     const $dlgSend = $("#dlgSend");
     const $sendOK = $("#sendOK");
     const $dlgData = $("#dlgData");
+    const usuario = getUsuarioActivo();
+    const saldoActual = usuario.saldo || 0;
 
-    const nuevoSaldo = saldoActual - monto - cobroServicio;
-    localStorage.setItem("saldo", nuevoSaldo);
+    const nuevoSaldo = saldoActual - monto - COBRO_SERVICIO;
 
-    let movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
+    usuario.saldo = nuevoSaldo;
+    usuario.historial = usuario.historial || [];
 
-    movimientos.push({
+    let usuarioDestino = null;
+
+    if (selectedContact.banco === "Alke" && selectedContact.cuenta) {
+        usuarioDestino = buscarUsuarioPorCuenta(selectedContact.cuenta);
+    }
+
+    usuario.historial.push({
         cliente: selectedContact.alias,
         monto: -(monto + cobroServicio),
         fecha: new Date().toLocaleDateString("es-CL"),
@@ -165,12 +177,29 @@ $btnSend.on("click", function (e) {
         detalle: `- $${monto} <span class="text-muted small ms-2">-$${cobroServicio} (tax)</span>`
     });
 
-    localStorage.setItem("historyTable", JSON.stringify(movimientos));
-    cargarHistorial();
+    if (usuario.historial.length > MAX_HISTORY) {
+        usuario.historial.shift();
+    }
 
-    if (movimientos.length > MAX_HISTORY) {
-        movimientos.shift();
-        localStorage.setItem("historyTable", JSON.stringify(movimientos));
+    guardarUsuario(usuario);
+
+    if (usuarioDestino) {
+        usuarioDestino.saldo = (usuarioDestino.saldo || 0) + monto;
+        usuarioDestino.historial = usuarioDestino.historial || [];
+
+        usuarioDestino.historial.push({
+            cliente: usuario.alias,
+            monto: monto,
+            fecha: new Date().toLocaleDateString("es-CL"),
+            tipo: "Depósito",
+            detalle: `+ $${monto}`
+        });
+
+        if (usuarioDestino.historial.length > MAX_HISTORY) {
+            usuarioDestino.historial.shift();
+        }
+
+        guardarUsuario(usuarioDestino);
     }
 
     $dlgSend.addClass("d-none");
@@ -186,11 +215,10 @@ $btnSend.on("click", function (e) {
 });
 
 function cargarContactos() {
-    const contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-}
+    const usuario = getUsuarioActivo();
+    if (!usuario) return;
 
-function cargarUsuarios() {
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    const contactos = usuario.contactos || [];
 }
 
 $cancelForm.on("click", function () {
@@ -202,28 +230,44 @@ $closeForm.on("click", function () {
 });
 
 function cargarHistorial(filtro = "Todos") {
-    if (!$historyTable.length) return;
+    if (!$historyList.length) return;
 
-    let movimientos = JSON.parse(localStorage.getItem("historyTable")) || [];
-    $historyTable.empty();
+    const usuario = getUsuarioActivo();
+    if (!usuario) return;
+
+    let movimientos = usuario.historial || [];
+    $historyList.empty();
 
     if (filtro !== "Todos") {
         movimientos = movimientos.filter(m => m.tipo === filtro);
     }
 
     if (movimientos.length === 0) {
-        $historyTable.append(`<tr><td>-</td><td>-</td><td>-</td></tr>`);
+        $historyList.append(`
+            <li class="list-group-item text-muted text-center">
+                No hay movimientos
+            </li>
+        `);
         return;
     }
 
-    $.each(movimientos.slice().reverse(), function (index, mov) {
-        $historyTable.append(`
-            <tr>
-                <td>${mov.cliente}</td>
-                <td>${mov.detalle}</td>
-                <td>${mov.fecha}</td>
-            </tr>
-            `);
+    $.each(movimientos.slice().reverse(), function (_, mov) {
+        $historyList.append(`
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                    <strong>${mov.cliente}</strong>
+                    <span class="${mov.monto >= 0 ? 'text-success' : 'text-danger'}">
+                        ${mov.monto >= 0 ? '+' : '-'}$${Math.abs(mov.monto)}
+                    </span>
+                </div>
+                <div class="small text-muted">
+                    ${mov.detalle}
+                </div>
+                <div class="small text-muted text-end">
+                    ${mov.fecha}
+                </div>
+            </li>
+        `);
     });
 }
 
@@ -231,11 +275,12 @@ $btnConfirm.on("click", function (e) {
     e.preventDefault();
 
     const monto = Number($inputAmount.val());
-    const saldoActual = Number(localStorage.getItem("saldo")) || 0;
     const cobroServicio = 500;
     const $dlgSend = $("#dlgSend");
     const $cancelSend = $("#cancelSend");
     const $dlgData = $("#dlgData");
+    const usuario = getUsuarioActivo();
+    const saldoActual = usuario.saldo || 0;
 
     if (!selectedContact) {
         $dlgUser.removeClass("d-none");
@@ -269,7 +314,6 @@ $entra.add($sale).on("click", function () {
 $(document).ready(function () {
     cargarContactos();
     cargarHistorial();
-    cargarUsuarios();
 });
 
 $(document).ready(function () {
@@ -289,11 +333,13 @@ $(document).ready(function () {
     $btnDelHistorial.on("click", function (e) {
         e.preventDefault();
 
-        const saldoActual = Number(localStorage.getItem("saldo")) || 0;
+        const usuario = getUsuarioActivo();
+        const saldoActual = usuario.saldo || 0;
         localStorage.setItem("saldoBase", saldoActual);
 
 
-        localStorage.removeItem("historyTable");
+        usuario.historial = [];
+        guardarUsuario(usuario);
         cargarHistorial();
         $dlgHistorial.addClass("d-none");
 
@@ -307,3 +353,26 @@ $filtroTipo.on("change", function () {
     const tipo = $(this).val();
     cargarHistorial(tipo);
 });
+
+function getUsuarioActivo() {
+    const id = sessionStorage.getItem("usuarioActivo");
+    if (!id) return null;
+
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    return usuarios.find(u => u.id === Number(id)) || null;
+};
+
+function guardarUsuario(usuarioActualizado) {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+    const index = usuarios.findIndex(u => u.id === usuarioActualizado.id);
+    if (index === -1) return;
+
+    usuarios[index] = usuarioActualizado;
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+}
+
+function buscarUsuarioPorCuenta(numeroCuentaAlke) {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    return usuarios.find(u => u.numeroCuentaAlke === Number(numeroCuentaAlke)) || null;
+}
