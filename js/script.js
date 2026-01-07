@@ -111,7 +111,7 @@ function mostrarLeyenda($btn) {
     const $leyenda = $("<div>")
         .text(`Redirigiendo a ${$btn.data("title")}...`)
         .addClass(
-            "position-fixed top-50 start-50 translate-middle bg-dark text-white p-4 rounded-3 fw-bold text-center"
+            "position-fixed top-50 start-50 translate-middle bg-dark text-white p-4 rounded-3 fw-bold text-center w-75"
         )
         .css("z-index", "9999");
     $("body").append($leyenda);
@@ -165,7 +165,7 @@ $btnSend.on("click", function (e) {
 
     let usuarioDestino = null;
 
-    if (selectedContact.banco === "Alke" && selectedContact.cuenta) {
+    if (selectedContact.banco.toLowerCase() === "alke" && selectedContact.cuenta) {
         usuarioDestino = buscarUsuarioPorCuenta(selectedContact.cuenta);
     }
 

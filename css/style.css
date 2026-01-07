@@ -6,4 +6,42 @@
     align-items: center;
     background-color: rgba(55, 55, 55, 0.5);
     z-index: 9999;
+    text-align: center;
+    width: 100%;
+    margin: auto;
+}
+
+.logo {
+    height: auto;
+    max-width: 80px;
+}
+
+#dlgOverlay .center-stack {
+    margin: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+#dlgContact .alert-stack {
+    margin: auto;
+    padding: 1.0rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 75%;
+}
+
+.alert-content {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 2.0rem;
+}
+
+.tarjeta {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background-color: #f8f9fa;
 }

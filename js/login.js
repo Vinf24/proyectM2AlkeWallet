@@ -56,7 +56,7 @@ $(document).ready(function () {
 
                 const $leyenda = $("<div>")
                     .text("Iniciando Sesión...")
-                    .addClass("position-fixed top-50 start-50 translate-middle bg-dark text-white p-4 rounded-3 fw-bold")
+                    .addClass("position-fixed top-50 start-50 translate-middle bg-dark text-white p-4 rounded-3 fw-bold text-center w-75")
                     .css("z-index", "9999");
 
                 $("body").append($leyenda);

@@ -16,7 +16,7 @@
             id="btnLogout">Logout</a>
     </div>
     <div id="dlgOverlay" class="dlgOverlay d-none">
-        <div class="alert alert-warning m-auto p-4 d-flex flex-column gap-1" role="alert">
+        <div class="alert alert-warning center-stack" role="alert">
             <p class="mb-2">¿Seguro que deseas salir?</p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="goLogout" class="btn btn-danger btn-sm">Sí, salir</button>
@@ -37,7 +37,7 @@
                         <option value="Compra">Compra</option>
                     </select>
                 </div>
-                <div class="border rounded-3 bg-light p-3">
+                <div class="tarjeta p-3">
                     <ul id="historyList" class="list-group list-group-flush">
                         <li class="list-group-item text-muted text-center">
                             No hay movimientos
@@ -48,7 +48,7 @@
                     <button class="btn btn-primary ms-3 mt-3" id="historyClean">Limpiar Historial</button>
                 </div>
                 <div id="dlgHistorial" class="dlgOverlay d-none">
-                    <div class="alert alert-warning m-auto p-4 d-flex flex-column gap-1" role="alert">
+                    <div class="alert alert-warning center-stack" role="alert">
                         <p class="mb-2">¿Limpiar Historial?</p>
                         <div class="d-flex justify-content-center gap-2">
                             <button id="btnDelHistorial" class="btn btn-danger btn-sm">Sí, limpiar</button>

@@ -58,7 +58,7 @@ $(document).ready(function () {
 
         if (usuarioAlke) {
             $dlgAlkeDetected.removeClass("d-none");
-            $dlgAlkeData.text(`${usuarioAlke.nombre} ${usuarioAlke.apellido}`);
+            $dlgAlkeData.text(`${usuarioAlke.nombre.toUpperCase()} ${usuarioAlke.apellido.toUpperCase()}`);
 
             $goAlkeAdd.on("click", function () {
                 $("#nombre").val(usuarioAlke.nombre).prop("readonly", true).addClass("bg-light border-success");
@@ -71,6 +71,7 @@ $(document).ready(function () {
         }
         $cancelAlkeAdd.on("click", function () {
             $dlgAlkeDetected.addClass("d-none");
+            $("#cuenta, #banco").val("");
         });
     });
 
@@ -142,7 +143,7 @@ $(document).ready(function () {
             modal.hide();
 
             $completedDelUser.removeClass("d-none");
-            $completedDelData.text(`${alias} añadido con éxito.`);
+            $completedDelData.text(`"${alias.toUpperCase()}" añadid@ con éxito.`);
 
             setTimeout(function () {
                 $completedDelUser.addClass("d-none");
