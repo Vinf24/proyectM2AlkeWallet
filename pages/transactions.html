@@ -11,12 +11,12 @@
 </head>
 
 <body class="overflow-y-scroll">
-    <div class="navbar fixed-top position-relative py-3">
+    <div class="navbar nav-stack">
         <a class="btn btn-outline-primary position-absolute top-0 end-0 me-4 mt-3" href="../index.html"
             id="btnLogout">Logout</a>
     </div>
     <div id="dlgOverlay" class="dlgOverlay d-none">
-        <div class="alert alert-warning center-stack" role="alert">
+        <div class="alert-warning-custom center-stack" role="alert">
             <p class="mb-2">¿Seguro que deseas salir?</p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="goLogout" class="btn btn-danger btn-sm">Sí, salir</button>
@@ -48,7 +48,7 @@
                     <button class="btn btn-primary ms-3 mt-3" id="historyClean">Limpiar Historial</button>
                 </div>
                 <div id="dlgHistorial" class="dlgOverlay d-none">
-                    <div class="alert alert-warning center-stack" role="alert">
+                    <div class="alert-warning-custom center-stack" role="alert">
                         <p class="mb-2">¿Limpiar Historial?</p>
                         <div class="d-flex justify-content-center gap-2">
                             <button id="btnDelHistorial" class="btn btn-danger btn-sm">Sí, limpiar</button>

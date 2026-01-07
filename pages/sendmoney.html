@@ -11,17 +11,17 @@
 </head>
 
 <body class="overflow-y-scroll">
-    <div class="navbar fixed-top position-relative py-3">
+    <div class="navbar nav-stack">
         <a class="btn btn-outline-primary position-absolute top-0 end-0 me-4 mt-3" href="../index.html"
             id="btnLogout">Logout</a>
     </div>
     <div id="dlgCompleted" class="dlgOverlay d-none">
-        <div class="alert alert-success center-stack justify-content-center" role="alert">
+        <div class="alert-success-custom center-stack justify-content-center" role="alert">
             <p id="sendOK" class="alert-content"></p>
         </div>
     </div>
     <div id="dlgOverlay" class="dlgOverlay d-none">
-        <div class="alert alert-warning center-stack" role="alert">
+        <div class="alert-warning-custom center-stack" role="alert">
             <p class="mb-2">¿Seguro que deseas salir?</p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="goLogout" class="btn btn-danger btn-sm">Sí, salir</button>
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div id="dlgSend" class="dlgOverlay d-none">
-        <div class="alert alert-warning center-stack" role="alert">
+        <div class="alert-custom-warning center-stack" role="alert">
             <p class="mb-2">¿Confirmar el Envio?</p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="btnSend" class="btn btn-danger btn-sm">Sí, enviar</button>
@@ -39,25 +39,25 @@
         </div>
     </div>
     <div id="dlgUser" class="dlgOverlay d-none">
-        <div class="alert alert-warning alert-dismissible center-stack justify-content-center">
+        <div class="alert-warning-custom alert-dismissible center-stack justify-content-center">
             <p id="dlgData" class="alert-content text-center"></p>
             <button type="button" class="btn-close p-2"></button>
         </div>
     </div>
     <div id="dlgDelUser" class="dlgOverlay d-none">
-        <div class="alert alert-info alert-dismissible mb-0 p-4 d-flex flex-column gap-1 justify-content-center">
+        <div class="alert-info-custom alert-dismissible mb-0 p-4 d-flex flex-column gap-1 justify-content-center">
             <button type="button" class="btn-close p-1"></button>
             <p id="dlgDelData" class="m-0 fw-bold text-center"></p>
         </div>
     </div>
     <div id="completedDelUser" class="dlgOverlay d-none">
-        <div class="alert alert-info alert-dismissible mb-0 p-4 d-flex flex-column gap-1 justify-content-center">
+        <div class="alert-info-custom alert-dismissible mb-0 p-4 d-flex flex-column gap-1 justify-content-center">
             <button type="button" class="btn-close p-1"></button>
             <p id="completedDelData" class="m-0 fw-bold text-center"></p>
         </div>
     </div>
     <div id="dlgDelete" class="dlgOverlay d-none">
-        <div class="alert alert-warning m-auto py-3 px-2 d-flex flex-column gap-1 w-75" style="max-width: 380px;"
+        <div class="alert-warning-custom m-auto py-3 px-2 d-flex flex-column gap-1 w-75" style="max-width: 380px;"
             role="alert">
             <p class="mb-2 mx-auto">¿Eliminar Contacto?</p>
             <div class="d-flex justify-content-center gap-2 mt-2">
@@ -67,13 +67,13 @@
         </div>
     </div>
     <div id="dlgAlkeDetected" class="dlgOverlay d-none">
-        <div class="alert alert-info m-auto py-3 px-2 d-flex flex-column w-75 gap-1" style="max-width: 380px;"
+        <div class="alert-info-custom m-auto py-3 px-2 d-flex flex-column w-75 gap-1" style="max-width: 380px;"
             role="alert">
             <p class="alert-content">Usuario Alke Detectado</p>
             <hr class="my-1">
             <p id="dlgAlkeData" class="display-5 fw-bold text-center mb-1"></p>
             <div class="d-flex justify-content-center gap-2 mt-2">
-                <button id="goAlkeAdd" class="btn btn-success btn-sm">Sí, continuar</button>
+                <button id="goAlkeAdd" class="btn btn-info btn-sm">Sí, continuar</button>
                 <button id="cancelAlkeAdd" class="btn btn-secondary btn-sm">Cancelar</button>
             </div>
         </div>
@@ -136,7 +136,7 @@
                                         Contacto</button>
                                 </form>
                                 <div id="dlgContact" class="dlgOverlay d-none">
-                                    <div class="alert alert-warning alert-stack" role="alert">
+                                    <div class="alert-warning-custom alert-stack" role="alert">
                                         <p class="alert-content" id="dlgContactData"></p>
                                         <div class="d-flex justify-content-center">
                                             <button id="goContact" class="btn btn-danger btn-sm">Entendido</button>
@@ -163,7 +163,7 @@
                             <label class="pt-2 pb-1" for="inputAmount">Monto a enviar:</label>
                             <input type="number" id="inputAmount" class="form-control" placeholder="Ingrese monto..."
                                 required>
-                            <label for="inputAmount" class="text-muted small ms-2 mt-2 mb-1 user-select-none">Mín:
+                            <label for="inputAmount" class="text-detail ms-2 mt-2 user-select-none">Mín:
                                 $1000, Tax: $500</label>
                         </div>
                     </div>
