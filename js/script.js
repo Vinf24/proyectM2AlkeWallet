@@ -4,6 +4,7 @@ const $btnSend = $("#btnSend");
 const $dlgDeposit = $("#dlgDeposit");
 const $btnConfirm = $("#btnConfirm");
 const $dlgUser = $("#dlgUser");
+const $goSend = $("#goSend");
 
 const $contactoModal = $("#contactoModal input");
 const $cancelForm = $("#cancelForm");
@@ -22,12 +23,12 @@ const $filtroTipo = $("#filtroTipo");
 const $historyClean = $("#historyClean");
 
 let nuevoSaldo = "0";
+let COBRO_SERVICIO = 500;
+let MAX_HISTORY = 5;
 
-const MAX_HISTORY = 5;
-const COBRO_SERVICIO = 500;
 
 
-$dlgUser.on("click", ".btn-close", function () {
+$goSend.on("click", function () {
     $dlgUser.addClass("d-none");
 });
 
@@ -150,7 +151,6 @@ $btnSend.on("click", function (e) {
     e.preventDefault();
 
     const monto = Number($inputAmount.val());
-    const cobroServicio = COBRO_SERVICIO;
     const $dlgCompleted = $("#dlgCompleted");
     const $dlgSend = $("#dlgSend");
     const $sendOK = $("#sendOK");
@@ -171,10 +171,10 @@ $btnSend.on("click", function (e) {
 
     usuario.historial.push({
         cliente: selectedContact.alias,
-        monto: -(monto + cobroServicio),
+        monto: -(monto + COBRO_SERVICIO),
         fecha: new Date().toLocaleDateString("es-CL"),
         tipo: "Transferencia",
-        detalle: `- $${monto} <span class="text-muted small ms-2">-$${cobroServicio} (tax)</span>`
+        detalle: `- $${monto} <span class="text-muted small ms-2">-$${COBRO_SERVICIO} (tax)</span>`
     });
 
     if (usuario.historial.length > MAX_HISTORY) {
@@ -275,7 +275,6 @@ $btnConfirm.on("click", function (e) {
     e.preventDefault();
 
     const monto = Number($inputAmount.val());
-    const cobroServicio = 500;
     const $dlgSend = $("#dlgSend");
     const $cancelSend = $("#cancelSend");
     const $dlgData = $("#dlgData");
@@ -288,13 +287,13 @@ $btnConfirm.on("click", function (e) {
         return;
     }
 
-    if (isNaN(monto) || monto < 1000) {
+    if (isNaN(monto) || monto < 1000 + COBRO_SERVICIO) {
         $dlgUser.removeClass("d-none");
         $dlgData.text("Ingrese un monto válido");
         return;
     }
 
-    if (saldoActual < monto + cobroServicio) {
+    if (saldoActual < monto + COBRO_SERVICIO) {
         $dlgUser.removeClass("d-none");
         $dlgData.text("Saldo insuficiente");
         return;
@@ -335,11 +334,16 @@ $(document).ready(function () {
 
         const usuario = getUsuarioActivo();
         const saldoActual = usuario.saldo || 0;
+        // store current balance as saldoBase in the user object so the chart
+        // starts from the real balance after cleaning history
+        usuario.saldoBase = saldoActual;
         localStorage.setItem("saldoBase", saldoActual);
-
 
         usuario.historial = [];
         guardarUsuario(usuario);
+
+        // redraw chart (if present) and refresh visible historial
+        if (typeof dibujarGraficoSaldo === 'function') dibujarGraficoSaldo();
         cargarHistorial();
         $dlgHistorial.addClass("d-none");
 

@@ -10,9 +10,9 @@ URGENTE:
 - (COMPLETO) preparar login.html para comportarse como página principal
 - (COMPLETO) diferenciar contactos, saldo e historial por usuario
 - (COMPLETO) al agregar contacto, detectar cuenta y nombre de banco, coincidente entre usuarios registrados, para cargar nombre, apellido y solo preguntar por el alias.
+- (COMPLETO) reestructurar la apariencia, nuevo diseño y paleta de colores.
 - planificar la revisión de las funcionalidades, para detectar posibles errores.
-- reestructurar la apariencia, nuevo diseño y paleta de colores.
-    - corregir apariencia y tamaño de TODAS las alertas
+    - (COMPLETO) corregir apariencia y tamaño de TODAS las alertas
     - (COMPLETO) reemplazar historytable, por una lista, cada item será un contenedor más flexible.
 
 Objetivos menos prioritarios:

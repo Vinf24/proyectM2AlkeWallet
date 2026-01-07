@@ -27,26 +27,26 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-11 col-sm-10 col-md-9">
-                <div class="display-2 fw-bold pb-4">Depositar</div>
+                <div class="main-title pb-4 text-center">Depositar</div>
                 <form class="p-4 tarjeta">
                     <div class="form-group mb-3">
                         <label for="amount" class="mb-1">Monto a depositar:</label>
-                        <input type="number" id="amount" class="form-control" placeholder="Ingrese monto">
+                        <input type="number" id="amount" class="form-control cont-data" placeholder="Ingrese monto">
                     </div>
                     <h2 class="mb-3 fw-normal" style=font-size:20px>Saldo Actual:</h2>
                     <div class="row mx-auto">
-                        <input type="text" class="fs-4 fw-bold form-control w-75" id="saldo" disabled>
+                        <input type="text" class="form-control show-data" id="saldo" disabled>
                         <p class="fs-4 fw-bold w-25 my-auto">$</p>
+                    </div>
+                    <div id="dlgDeposit" class="d-none w-100 mt-2">
+                        <div
+                            class="alert-success-custom alert-dismissible mb-0 p-2 pb-2 px-3 d-flex flex-column gap-1 justify-content-center">
+                            <button type="button" class="btn-close p-2"></button>
+                            <p id="depositOk" class="m-0 alert-content text-center"></p>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary mt-3 entra" id="btnDeposit">Realizar depósito</button>
                 </form>
-                <div id="dlgDeposit" class="d-none w-100 mt-2">
-                    <div
-                        class="alert-success-custom alert-dismissible mb-0 p-2 pb-2 px-3 d-flex flex-column gap-1 justify-content-center">
-                        <button type="button" class="btn-close p-2"></button>
-                        <p id="depositOk" class="m-0 alert-content text-center"></p>
-                    </div>
-                </div>
                 <div class="text-center mt-3">
                     <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al
                         Menú

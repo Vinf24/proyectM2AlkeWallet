@@ -27,39 +27,42 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-11 col-sm-10 col-md-9">
-                <div class="display-2 fw-bold mb-5">Últimos Movimientos</div>
-                <div class="mb-3 w-50">
-                    <label class="form-label fw-bold">Filtrar por tipo:</label>
-                    <select id="filtroTipo" class="form-select">
-                        <option value="Todos">Todos</option>
-                        <option value="Depósito">Depósito</option>
-                        <option value="Transferencia">Transferencia</option>
-                        <option value="Compra">Compra</option>
-                    </select>
-                </div>
-                <div class="tarjeta p-3">
-                    <ul id="historyList" class="list-group list-group-flush">
-                        <li class="list-group-item text-muted text-center">
-                            No hay movimientos
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <button class="btn btn-primary ms-3 mt-3" id="historyClean">Limpiar Historial</button>
-                </div>
-                <div id="dlgHistorial" class="dlgOverlay d-none">
-                    <div class="alert-warning-custom center-stack" role="alert">
-                        <p class="mb-2">¿Limpiar Historial?</p>
-                        <div class="d-flex justify-content-center gap-2">
-                            <button id="btnDelHistorial" class="btn btn-danger btn-sm">Sí, limpiar</button>
-                            <button id="cancelDelHistorial" class="btn btn-secondary btn-sm">Cancelar</button>
+                <div class="main-title text-center">Últimos Movimientos</div>
+                <div class="max-container">
+                    <div class="mb-3 ms-2 w-50">
+                        <label class="form-label fw-bold">Filtrar por tipo:</label>
+                        <select id="filtroTipo" class="form-select">
+                            <option value="Todos">Todos</option>
+                            <option value="Depósito">Depósito</option>
+                            <option value="Transferencia">Transferencia</option>
+                            <option value="Compra">Compra</option>
+                        </select>
+                    </div>
+                    <div class="tarjeta p-3">
+                        <ul id="historyList" class="list-group list-group-flush">
+                            <li class="list-group-item text-muted text-center">
+                                No hay movimientos
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary ms-3 mt-3" id="historyClean">Limpiar Historial</button>
+                    </div>
+                    <div id="dlgHistorial" class="dlgOverlay d-none">
+                        <div class="alert-warning-custom center-stack w-75" role="alert">
+                            <p class="mb-3">¿Limpiar Historial?</p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button id="btnDelHistorial" class="btn btn-danger btn-sm">Sí, limpiar</button>
+                                <button id="cancelDelHistorial" class="btn btn-secondary btn-sm">Cancelar</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="text-center mt-2">
-                    <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al
-                        Menú
-                        Principal</a>
+                    <div class="text-center mt-2">
+                        <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf"
+                            data-title="Menú Principal">Volver al
+                            Menú
+                            Principal</a>
+                    </div>
                 </div>
             </div>
         </div>

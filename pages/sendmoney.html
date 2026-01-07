@@ -30,8 +30,8 @@
         </div>
     </div>
     <div id="dlgSend" class="dlgOverlay d-none">
-        <div class="alert-custom-warning center-stack" role="alert">
-            <p class="mb-2">¿Confirmar el Envio?</p>
+        <div class="alert-warning-custom center-stack w-75" role="alert">
+            <p class="mb-3">¿Confirmar el Envio?</p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="btnSend" class="btn btn-danger btn-sm">Sí, enviar</button>
                 <button id="cancelSend" class="btn btn-secondary btn-sm">Cancelar</button>
@@ -39,9 +39,11 @@
         </div>
     </div>
     <div id="dlgUser" class="dlgOverlay d-none">
-        <div class="alert-warning-custom alert-dismissible center-stack justify-content-center">
-            <p id="dlgData" class="alert-content text-center"></p>
-            <button type="button" class="btn-close p-2"></button>
+        <div class="alert-warning-custom d-flex flex-column gap-1" role="alert">
+            <p class="alert-content" id="dlgData"></p>
+            <div class="d-flex justify-content-center gap-2">
+                <button id="goSend" class="btn btn-danger btn-sm">Entendido</button>
+            </div>
         </div>
     </div>
     <div id="dlgDelUser" class="dlgOverlay d-none">
@@ -57,8 +59,7 @@
         </div>
     </div>
     <div id="dlgDelete" class="dlgOverlay d-none">
-        <div class="alert-warning-custom m-auto py-3 px-2 d-flex flex-column gap-1 w-75" style="max-width: 380px;"
-            role="alert">
+        <div class="alert-warning-custom m-auto d-flex flex-column gap-1 w-75" style="max-width: 380px;" role="alert">
             <p class="mb-2 mx-auto">¿Eliminar Contacto?</p>
             <div class="d-flex justify-content-center gap-2 mt-2">
                 <button id="goDelete" class="btn btn-danger btn-sm">Sí, eliminar</button>
@@ -71,7 +72,7 @@
             role="alert">
             <p class="alert-content">Usuario Alke Detectado</p>
             <hr class="my-1">
-            <p id="dlgAlkeData" class="display-5 fw-bold text-center mb-1"></p>
+            <p id="dlgAlkeData" class="fs-4 fw-bold text-center mb-1"></p>
             <div class="d-flex justify-content-center gap-2 mt-2">
                 <button id="goAlkeAdd" class="btn btn-info btn-sm">Sí, continuar</button>
                 <button id="cancelAlkeAdd" class="btn btn-secondary btn-sm">Cancelar</button>
@@ -81,16 +82,15 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-11 col-sm-10 col-md-9">
-                <div class="display-2 fw-bold pb-4">Enviar Dinero</div>
+                <div class="main-title text-center">Enviar Dinero</div>
                 <form class="px-4 py-2 tarjeta">
                     <div class="form-group mb-2">
                         <label class="py-2" for="contactSearchInput">Buscar en la agencia de transferencias:</label>
-                        <input type="text" id="contactSearchInput" class="form-control"
+                        <input type="text" id="contactSearchInput" class="form-control cont-data"
                             placeholder="Buscar contacto...">
                     </div>
                 </form>
-
-                <div class="container text-end">
+                <div class="max-container text-end">
                     <button class="btn btn-outline-primary my-3 me-3" data-bs-toggle="modal"
                         data-bs-target="#contactoModal">
                         Agregar contacto
@@ -108,29 +108,29 @@
                                     <div class="row">
                                         <div class="mb-3 w-50">
                                             <label for="nombre" class="form-label">Nombre:</label>
-                                            <input type="text" id="nombre" class="form-control pe-0"
+                                            <input type="text" id="nombre" class="form-control pe-0 cont-data"
                                                 placeholder="nombre..." required>
                                         </div>
                                         <div class="mb-3 w-50">
-                                            <label for="nombre" class="form-label">Apellido:</label>
-                                            <input type="text" id="apellido" class="form-control pe-0"
+                                            <label for="apellido" class="form-label">Apellido:</label>
+                                            <input type="text" id="apellido" class="form-control pe-0 cont-data"
                                                 placeholder="apellido..." required>
                                         </div>
                                     </div>
                                     <div class="mb-3 w-75">
                                         <label for="cuenta" class="form-label">N° de CBU:</label>
                                         <input type="text" id="cuenta" inputmode="numeric" pattern="\d{8}"
-                                            class="form-control" placeholder="01234567" required>
+                                            class="form-control cont-data" placeholder="01234567" required>
                                     </div>
                                     <div class="mb-3 w-75">
                                         <label for="nombre" class="form-label">Alias:</label>
-                                        <input type="text" id="alias" class="form-control" placeholder="alias..."
-                                            required>
+                                        <input type="text" id="alias" class="form-control cont-data"
+                                            placeholder="alias..." required>
                                     </div>
                                     <div class="mb-3 w-75">
                                         <label for="nombre" class="form-label">Nombre del Banco:</label>
-                                        <input type="text" id="banco" class="form-control" placeholder="banco..."
-                                            required>
+                                        <input type="text" id="banco" class="form-control cont-data"
+                                            placeholder="banco..." required>
                                     </div>
                                     <button class="btn btn-primary" type="submit" id="addContact">Guardar
                                         Contacto</button>
@@ -153,25 +153,30 @@
                 </div>
 
                 <form>
-                    <div class="mx-3">
-                        <label class="form-label pb-3 display-5 fw-bold">Contactos:</label>
-
-                        <ul id="contactList" class="list-group w-75 mx-auto d-none"></ul>
+                    <div class="mb-4">
+                        <p class="display-5 fw-bold text-center">Contactos:</p>
+                        <label for="contactSearchInput" class="text-muted text-center d-block"
+                            id="labelContacts">Primero busca un
+                            contacto:</label>
+                        <ul id="contactList" class="list-group mx-auto d-none col-sm-10 col-md-9 col-lg-7"></ul>
+                        <div class="text-center mt-3">
+                            <p class="btn btn-outline-primary d-none" id="listCancel">cancelar</p>
+                        </div>
                     </div>
                     <div class="px-4 py-2 tarjeta mt-3">
                         <div class="form-group mb-1">
                             <label class="pt-2 pb-1" for="inputAmount">Monto a enviar:</label>
-                            <input type="number" id="inputAmount" class="form-control" placeholder="Ingrese monto..."
-                                required>
-                            <label for="inputAmount" class="text-detail ms-2 mt-2 user-select-none">Mín:
-                                $1000, Tax: $500</label>
+                            <input type="number" id="inputAmount" class="form-control cont-data"
+                                placeholder="Ingrese monto..." required>
+                            <label for="inputAmount" class="text-detail ms-2 mt-2 user-select-none">Mínimo:
+                                $1000 + $500 (Tax)</label>
                         </div>
                     </div>
-                    <div class="d-none justify-content-between" id="dlgSelectedContact">
-                        <button class="btn btn-primary mt-3 sale" type="submit" id="btnConfirm">Enviar</button>
-                        <a class="btn btn-danger mt-3" id="delContact">Borrar Contacto</a>
-                    </div>
                 </form>
+                <div class="d-none" id="dlgSelectedContact">
+                    <button class="btn btn-primary mt-3 sale" type="submit" id="btnConfirm">Enviar</button>
+                    <a class="btn btn-danger mt-3" id="delContact">Borrar Contacto</a>
+                </div>
                 <div class="text-center mt-3">
                     <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al
                         Menú

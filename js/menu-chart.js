@@ -10,7 +10,6 @@ function obtenerDatosSaldo() {
 
     let saldo = saldoBase;
 
-    // siempre partimos desde 0
     labels.push("Saldo Inicial");
     data.push(saldo);
 

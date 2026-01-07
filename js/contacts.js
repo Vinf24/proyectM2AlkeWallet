@@ -7,6 +7,8 @@ const $dlgSelectedContact = $("#dlgSelectedContact");
 
 const $contactSearchInput = $("#contactSearchInput");
 const $contactList = $("#contactList");
+const $labelContacts = $("#labelContacts");
+const $listCancel = $("#listCancel");
 
 let selectedContact = null;
 
@@ -256,14 +258,18 @@ $contactSearchInput.on("input", function () {
     const valor = $(this).val().trim();
 
     if (valor.length === 0) {
-        $contactList.addClass("d-none");
-        $dlgSelectedContact.removeClass("d-flex").addClass("d-none");
-        selectedContact = null;
+        resetBuscadorContactos();
         return;
     }
 
     filtrarContactos(valor);
     $contactList.removeClass("d-none");
+    $labelContacts.addClass("d-none");
+    $listCancel.removeClass("d-none");
+});
+
+$listCancel.on("click", function () {
+    resetBuscadorContactos();
 });
 
 $contactList.on("click", ".contact-item", function () {
@@ -283,4 +289,13 @@ $contactList.on("click", ".contact-item", function () {
 function buscarUsuarioAlkePorCuenta(cuenta) {
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
     return usuarios.find(u => u.numeroCuentaAlke === Number(cuenta)) || null;
+}
+
+function resetBuscadorContactos() {
+    $contactSearchInput.val("");
+    $contactList.addClass("d-none").empty();
+    $labelContacts.removeClass("d-none");
+    $listCancel.addClass("d-none");
+    $dlgSelectedContact.removeClass("d-flex").addClass("d-none");
+    selectedContact = null;
 }
