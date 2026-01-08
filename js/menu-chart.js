@@ -83,11 +83,6 @@ $(document).ready(function () {
     dibujarGraficoSaldo();
 });
 
-const usuario = getUsuarioActivo();
-if (!usuario) {
-    window.location.href = "../pages/login.html";
-}
-
 $(document).ready(function () {
     const usuario = getUsuarioActivo();
     if (!usuario) return;

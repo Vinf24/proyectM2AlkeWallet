@@ -12,6 +12,10 @@ const $listCancel = $("#listCancel");
 
 let selectedContact = null;
 
+$(document).ready(function () {
+    verificarSesion();
+});
+
 function validarContacto(datos, contactos) {
     const { nombre, apellido, cuenta, banco, alias } = datos;
     const cuentaRegex = /^\d{8}$/;

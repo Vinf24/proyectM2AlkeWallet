@@ -97,3 +97,5 @@ REVISION:
         4 páginas, la última solo tiene 4.
     
     Ahora entrar con Pedro y verificar que tiene 20.000, revisar también su historial.
+
+    Verificar que al entrar a cualquier página que no sea index, sin haber iniciado sesión, se redirija.
