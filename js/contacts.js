@@ -271,11 +271,9 @@ $contactList.on("click", ".contact-item", function () {
     const contactos = usuario.contactos || [];
     selectedContact = contactos[index];
 
-    // Feedback visual
     $contactList.find(".contact-item").removeClass("active");
     $(this).addClass("active");
 
-    // Mostrar botón Enviar
     $dlgSelectedContact.removeClass("d-none").addClass("d-flex");
 });
 

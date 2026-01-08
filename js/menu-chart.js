@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    verificarSesion();
+});
+
 function obtenerDatosSaldo() {
     const usuario = getUsuarioActivo();
     if (!usuario) return { labels: [], data: [] };

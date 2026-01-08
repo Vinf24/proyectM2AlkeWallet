@@ -248,7 +248,7 @@ function cargarHistorial(filtro = "Todos", pagina = 1) {
 
     $.each(visibles, function (_, mov) {
         $historyList.append(`
-            <li class="list-group-item">
+            <li class="list-group-item py-1">
                 <div class="d-flex justify-content-between">
                     <strong>${mov.cliente}</strong>
                     <span class="${mov.monto >= 0 ? 'text-success' : 'text-danger'}">
@@ -374,4 +374,15 @@ function guardarUsuario(usuarioActualizado) {
 function buscarUsuarioPorCuenta(numeroCuentaAlke) {
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
     return usuarios.find(u => u.numeroCuentaAlke === Number(numeroCuentaAlke)) || null;
+}
+
+function verificarSesion() {
+    const idUsuario = sessionStorage.getItem("usuarioActivo");
+
+    if (!idUsuario) {
+        window.location.href = "../index.html";
+        return false;
+    }
+
+    return true;
 }

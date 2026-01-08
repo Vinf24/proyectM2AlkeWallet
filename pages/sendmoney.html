@@ -83,10 +83,14 @@
                     <div class="form-group mb-2">
                         <label class="py-2" for="contactSearchInput">Buscar en la agencia de transferencias:</label>
                         <input type="text" id="contactSearchInput" class="form-control cont-data"
-                            placeholder="Buscar contacto...">
+                            placeholder="Buscar contacto..." autocomplete="off">
+                        <ul id="contactList" class="list-group mx-auto d-none col-12 col-md-10"></ul>
+                        <div class="text-center mt-3">
+                            <p class="btn btn-dark d-none" id="listCancel">cancelar</p>
+                        </div>
                     </div>
                 </form>
-                <div class="max-container text-end">
+                <div class="max-container text-end" id="contAddContact">
                     <button class="btn btn-outline-primary my-3 me-3" data-bs-toggle="modal"
                         data-bs-target="#contactoModal">
                         Agregar contacto
@@ -146,18 +150,7 @@
                         </div>
                     </div>
                 </div>
-
                 <form>
-                    <div class="mb-4">
-                        <p class="display-5 fw-bold text-center">Contactos:</p>
-                        <label for="contactSearchInput" class="text-muted text-center d-block"
-                            id="labelContacts">Primero busca un
-                            contacto:</label>
-                        <ul id="contactList" class="list-group mx-auto d-none col-sm-10 col-md-9 col-lg-7"></ul>
-                        <div class="text-center mt-3">
-                            <p class="btn btn-outline-primary d-none" id="listCancel">cancelar</p>
-                        </div>
-                    </div>
                     <div class="px-4 py-2 tarjeta mt-3">
                         <div class="form-group mb-1">
                             <label class="pt-2 pb-1" for="inputAmount">Monto a enviar:</label>
@@ -167,11 +160,11 @@
                                 $1000 + $500 (Tax)</label>
                         </div>
                     </div>
+                    <div class="d-none" id="dlgSelectedContact">
+                        <button class="btn btn-primary mt-3 sale" type="submit" id="btnConfirm">Enviar</button>
+                        <a class="btn btn-danger mt-3" id="delContact">Borrar Contacto</a>
+                    </div>
                 </form>
-                <div class="d-none" id="dlgSelectedContact">
-                    <button class="btn btn-primary mt-3 sale" type="submit" id="btnConfirm">Enviar</button>
-                    <a class="btn btn-danger mt-3" id="delContact">Borrar Contacto</a>
-                </div>
                 <div class="text-center mt-3">
                     <a href="/pages/menu.html" class="btn btn-dark mt-3 surf" data-title="Menú Principal">Volver al
                         Menú

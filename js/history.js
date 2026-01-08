@@ -1,5 +1,9 @@
 let paginaActual = 1;
 
+$(document).ready(function () {
+    verificarSesion();
+});
+
 $("#nextPage").on("click", function () {
     paginaActual++;
     cargarHistorial($filtroTipo.val(), paginaActual);

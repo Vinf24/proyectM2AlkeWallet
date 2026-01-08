@@ -1,6 +1,10 @@
 const $registerForm = $("#registerForm");
 const $registroModal = $("#registroModal");
 
+$(document).ready(function () {
+    verificarSesion();
+});
+
 function validarRegistro(datos, usuarios) {
     const { nombre, apellido, email, clave, claveRepeat, alias } = datos;
     const claveOk = clave === claveRepeat;
