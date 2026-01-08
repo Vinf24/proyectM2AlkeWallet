@@ -125,10 +125,11 @@
 }
 
 .main-title {
-    font-size: 3.0rem;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    line-height: 1.2;
     font-weight: 700;
     margin: 2rem 0;
-    line-height: 4rem;
+    text-align: center;
 }
 
 .chart-container {

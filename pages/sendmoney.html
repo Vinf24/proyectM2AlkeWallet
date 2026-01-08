@@ -25,7 +25,7 @@
             <p class="mb-2">¿Seguro que deseas salir?</p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="goLogout" class="btn btn-danger btn-sm">Sí, salir</button>
-                <button id="cancelLogout" class="btn btn-secondary btn-sm">Cancelar</button>
+                <button id="cancelLogout" class="btn btn-dark btn-sm">Cancelar</button>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
             <p class="mb-3">¿Confirmar el Envio?</p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="btnSend" class="btn btn-danger btn-sm">Sí, enviar</button>
-                <button id="cancelSend" class="btn btn-secondary btn-sm">Cancelar</button>
+                <button id="cancelSend" class="btn btn-outline-light btn-sm">Cancelar</button>
             </div>
         </div>
     </div>
@@ -46,16 +46,12 @@
             </div>
         </div>
     </div>
-    <div id="dlgDelUser" class="dlgOverlay d-none">
-        <div class="alert-info-custom alert-dismissible mb-0 p-4 d-flex flex-column gap-1 justify-content-center">
-            <button type="button" class="btn-close p-1"></button>
-            <p id="dlgDelData" class="m-0 fw-bold text-center"></p>
-        </div>
-    </div>
-    <div id="completedDelUser" class="dlgOverlay d-none">
-        <div class="alert-info-custom alert-dismissible mb-0 p-4 d-flex flex-column gap-1 justify-content-center">
-            <button type="button" class="btn-close p-1"></button>
-            <p id="completedDelData" class="m-0 fw-bold text-center"></p>
+    <div id="dlgDelAdd" class="dlgOverlay d-none">
+        <div class="alert-info-custom d-flex flex-column gap-1" role="alert">
+            <p class="alert-content" id="dlgDelAddData"></p>
+            <div class="d-flex justify-content-center gap-2">
+                <button id="goDelAdd" class="btn btn-light btn-sm">Entendido</button>
+            </div>
         </div>
     </div>
     <div id="dlgDelete" class="dlgOverlay d-none">
@@ -63,7 +59,7 @@
             <p class="mb-2 mx-auto">¿Eliminar Contacto?</p>
             <div class="d-flex justify-content-center gap-2 mt-2">
                 <button id="goDelete" class="btn btn-danger btn-sm">Sí, eliminar</button>
-                <button id="cancelDelete" class="btn btn-secondary btn-sm">Cancelar</button>
+                <button id="cancelDelete" class="btn btn-outline-light btn-sm">Cancelar</button>
             </div>
         </div>
     </div>
@@ -74,8 +70,8 @@
             <hr class="my-1">
             <p id="dlgAlkeData" class="fs-4 fw-bold text-center mb-1"></p>
             <div class="d-flex justify-content-center gap-2 mt-2">
-                <button id="goAlkeAdd" class="btn btn-info btn-sm">Sí, continuar</button>
-                <button id="cancelAlkeAdd" class="btn btn-secondary btn-sm">Cancelar</button>
+                <button id="goAlkeAdd" class="btn btn-light btn-sm">Sí, continuar</button>
+                <button id="cancelAlkeAdd" class="btn btn-light btn-sm">Cancelar</button>
             </div>
         </div>
     </div>
@@ -145,8 +141,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="cancelForm" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancelar</button>
+                                <button id="cancelForm" class="btn btn-dark" data-bs-dismiss="modal">Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -178,7 +173,7 @@
                     <a class="btn btn-danger mt-3" id="delContact">Borrar Contacto</a>
                 </div>
                 <div class="text-center mt-3">
-                    <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al
+                    <a href="/pages/menu.html" class="btn btn-dark mt-3 surf" data-title="Menú Principal">Volver al
                         Menú
                         Principal</a>
                 </div>

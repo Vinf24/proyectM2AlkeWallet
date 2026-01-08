@@ -5,6 +5,7 @@ const $dlgDeposit = $("#dlgDeposit");
 const $btnConfirm = $("#btnConfirm");
 const $dlgUser = $("#dlgUser");
 const $goSend = $("#goSend");
+const $goDeposit = $("#goDeposit");
 
 const $contactoModal = $("#contactoModal input");
 const $cancelForm = $("#cancelForm");
@@ -32,7 +33,7 @@ $goSend.on("click", function () {
     $dlgUser.addClass("d-none");
 });
 
-$dlgDeposit.on("click", ".btn-close", function () {
+$goDeposit.on("click", function () {
     $dlgDeposit.addClass("d-none");
 });
 
@@ -40,7 +41,7 @@ $(document).ready(function () {
 
     const $btnDeposit = $("#btnDeposit");
     const $amount = $("#amount");
-    const $depositOk = $("#depositOk");
+    const $dlgDepositData = $("#dlgDepositData");
 
     if ($btnDeposit.length && $amount.length) {
         $btnDeposit.on("click", function (e) {
@@ -70,16 +71,12 @@ $(document).ready(function () {
                 detalle: `+$${monto}`
             });
 
-            if (usuario.historial.length > MAX_HISTORY) {
-                usuario.historial.shift();
-            }
-
             guardarUsuario(usuario);
 
             $amount.val("");
             $saldo.val(nuevoSaldo);
 
-            $depositOk.text(`$${monto} depositados correctamente.`);
+            $dlgDepositData.text(`$${monto} depositados correctamente.`);
             $dlgDeposit.removeClass("d-none");
 
             $(".surf")[0]
@@ -177,10 +174,6 @@ $btnSend.on("click", function (e) {
         detalle: `- $${monto} <span class="text-muted small ms-2">-$${COBRO_SERVICIO} (tax)</span>`
     });
 
-    if (usuario.historial.length > MAX_HISTORY) {
-        usuario.historial.shift();
-    }
-
     guardarUsuario(usuario);
 
     if (usuarioDestino) {
@@ -194,10 +187,6 @@ $btnSend.on("click", function (e) {
             tipo: "Depósito",
             detalle: `+ $${monto}`
         });
-
-        if (usuarioDestino.historial.length > MAX_HISTORY) {
-            usuarioDestino.historial.shift();
-        }
 
         guardarUsuario(usuarioDestino);
     }
@@ -229,20 +218,26 @@ $closeForm.on("click", function () {
     $("#nombre, #apellido, #cuenta, #banco, #alias").val("");
 });
 
-function cargarHistorial(filtro = "Todos") {
+function cargarHistorial(filtro = "Todos", pagina = 1) {
     if (!$historyList.length) return;
 
     const usuario = getUsuarioActivo();
     if (!usuario) return;
 
     let movimientos = usuario.historial || [];
-    $historyList.empty();
 
     if (filtro !== "Todos") {
         movimientos = movimientos.filter(m => m.tipo === filtro);
     }
 
-    if (movimientos.length === 0) {
+    movimientos = movimientos.slice().reverse();
+
+    const inicio = (pagina - 1) * MAX_HISTORY;
+    const visibles = movimientos.slice(inicio, inicio + MAX_HISTORY);
+
+    $historyList.empty();
+
+    if (visibles.length === 0) {
         $historyList.append(`
             <li class="list-group-item text-muted text-center">
                 No hay movimientos
@@ -251,7 +246,7 @@ function cargarHistorial(filtro = "Todos") {
         return;
     }
 
-    $.each(movimientos.slice().reverse(), function (_, mov) {
+    $.each(visibles, function (_, mov) {
         $historyList.append(`
             <li class="list-group-item">
                 <div class="d-flex justify-content-between">

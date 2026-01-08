@@ -20,7 +20,7 @@
             <p class="mb-2">¿Seguro que deseas salir?</p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="goLogout" class="btn btn-danger btn-sm">Sí, salir</button>
-                <button id="cancelLogout" class="btn btn-secondary btn-sm">Cancelar</button>
+                <button id="cancelLogout" class="btn btn-outline-light btn-sm">Cancelar</button>
             </div>
         </div>
     </div>
@@ -45,6 +45,10 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <button id="prevPage" class="btn btn-outline-dark btn-sm">Anterior</button>
+                        <button id="nextPage" class="btn btn-outline-dark btn-sm">Siguiente</button>
+                    </div>
                     <div>
                         <button class="btn btn-primary ms-3 mt-3" id="historyClean">Limpiar Historial</button>
                     </div>
@@ -53,13 +57,12 @@
                             <p class="mb-3">¿Limpiar Historial?</p>
                             <div class="d-flex justify-content-center gap-2">
                                 <button id="btnDelHistorial" class="btn btn-danger btn-sm">Sí, limpiar</button>
-                                <button id="cancelDelHistorial" class="btn btn-secondary btn-sm">Cancelar</button>
+                                <button id="cancelDelHistorial" class="btn btn-outline-light btn-sm">Cancelar</button>
                             </div>
                         </div>
                     </div>
                     <div class="text-center mt-2">
-                        <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf"
-                            data-title="Menú Principal">Volver al
+                        <a href="/pages/menu.html" class="btn btn-dark mt-3 surf" data-title="Menú Principal">Volver al
                             Menú
                             Principal</a>
                     </div>
@@ -73,6 +76,7 @@
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/script.js"></script>
+    <script src="../js/history.js"></script>
 </body>
 
 </html>

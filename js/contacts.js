@@ -1,7 +1,7 @@
 const $formAddContact = $("#formAddContact");
-const $dlgDelUser = $("#dlgDelUser");
-const $completedDelUser = $("#completedDelUser");
-const $completedDelData = $("#completedDelData");
+const $dlgDelAddData = $("#dlgDelAddData");
+const $dlgDelAdd = $("#dlgDelAdd");
+const $goDelAdd = $("#goDelAdd");
 
 const $dlgSelectedContact = $("#dlgSelectedContact");
 
@@ -97,7 +97,6 @@ $(document).ready(function () {
             const alias = $("#alias").val().trim();
 
             const usuario = getUsuarioActivo();
-            const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
             if (!usuario) return;
 
@@ -140,15 +139,14 @@ $(document).ready(function () {
             $("#nombre, #apellido, #cuenta, #banco, #alias").val("");
 
             const modal = bootstrap.Modal.getInstance($("#contactoModal")[0]);
-            const $dlgDelData = $("#dlgDelData");
 
             modal.hide();
 
-            $completedDelUser.removeClass("d-none");
-            $completedDelData.text(`"${alias.toUpperCase()}" añadid@ con éxito.`);
+            $dlgDelAdd.removeClass("d-none");
+            $dlgDelAddData.text(`"${alias.toUpperCase()}" añadid@ con éxito.`);
 
             setTimeout(function () {
-                $completedDelUser.addClass("d-none");
+                $dlgDelAdd.addClass("d-none");
                 return;
             }, 2000);
         });
@@ -180,8 +178,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         const usuario = getUsuarioActivo();
-        const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-        const $dlgDelData = $("#dlgDelData");
+        const $dlgDelAddData = $("#dlgDelAddData");
 
         if (!selectedContact) {
             $dlgUser.removeClass("d-none");
@@ -194,8 +191,8 @@ $(document).ready(function () {
 
         guardarUsuario(usuario);
 
-        $dlgDelUser.removeClass("d-none");
-        $dlgDelData.text(`${selectedContact.alias} eliminado con éxito.`);
+        $dlgDelAdd.removeClass("d-none");
+        $dlgDelAddData.text(`${selectedContact.alias} eliminado con éxito.`);
         $dlgDelete.addClass("d-none");
 
         setTimeout(function () {
@@ -203,17 +200,13 @@ $(document).ready(function () {
             $contactSearchInput.val("");
             $contactList.empty();
             selectedContact = null;
-            $dlgDelUser.addClass("d-none");
+            $dlgDelAdd.addClass("d-none");
             return;
         }, 2000);
     });
 
-    $dlgDelUser.on("click", ".btn-close", function () {
-        $dlgDelUser.addClass("d-none");
-    });
-
-    $completedDelUser.on("click", ".btn-close", function () {
-        $completedDelUser.addClass("d-none");
+    $goDelAdd.on("click", function () {
+        $dlgDelAdd.addClass("d-none");
     });
 });
 
@@ -247,7 +240,7 @@ function filtrarContactos(filtro = "") {
         $contactList.append(`
         <li class="list-group-item list-group-item-action contact-item"
             data-index="${indexReal}">
-            <strong>${contacto.alias}</strong><br>
+            <strong>${contacto.alias}</strong><small> (${contacto.banco})</small><br>
             <small>${contacto.nombre} ${contacto.apellido}</small>
         </li>
     `)

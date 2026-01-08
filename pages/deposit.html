@@ -20,7 +20,7 @@
             <p class="mb-2">¿Seguro que deseas salir?</p>
             <div class="d-flex justify-content-center gap-2">
                 <button id="goLogout" class="btn btn-danger btn-sm">Sí, salir</button>
-                <button id="cancelLogout" class="btn btn-secondary btn-sm">Cancelar</button>
+                <button id="cancelLogout" class="btn btn-outline-light btn-sm">Cancelar</button>
             </div>
         </div>
     </div>
@@ -38,17 +38,18 @@
                         <input type="text" class="form-control show-data" id="saldo" disabled>
                         <p class="fs-4 fw-bold w-25 my-auto">$</p>
                     </div>
-                    <div id="dlgDeposit" class="d-none w-100 mt-2">
-                        <div
-                            class="alert-success-custom alert-dismissible mb-0 p-2 pb-2 px-3 d-flex flex-column gap-1 justify-content-center">
-                            <button type="button" class="btn-close p-2"></button>
-                            <p id="depositOk" class="m-0 alert-content text-center"></p>
+                    <div id="dlgDeposit" class="dlgOverlay d-none">
+                        <div class="alert-success-custom d-flex flex-column gap-1" role="alert">
+                            <p class="alert-content" id="dlgDepositData"></p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button id="goDeposit" class="btn btn-success btn-sm">Entendido</button>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary mt-3 entra" id="btnDeposit">Realizar depósito</button>
                 </form>
                 <div class="text-center mt-3">
-                    <a href="/pages/menu.html" class="btn btn-secondary mt-3 surf" data-title="Menú Principal">Volver al
+                    <a href="/pages/menu.html" class="btn btn-dark mt-3 surf" data-title="Menú Principal">Volver al
                         Menú
                         Principal</a>
                 </div>
