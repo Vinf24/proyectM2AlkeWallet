@@ -27,7 +27,7 @@ $(document).ready(function () {
 
         function mostrarError(mensaje) {
             $dlgLoginData.text(mensaje);
-            $dlgLogin.removeClass("d-none");
+            showAlert($dlgLogin, 3000);
         };
 
         $loginForm.on("submit", function (e) {
@@ -61,13 +61,28 @@ $(document).ready(function () {
 
                 $("body").append($leyenda);
 
-                setTimeout(function () {
-                    window.location.href = "../pages/menu.html";
-                }, 1000);
+                // Forzar reflow
+                void $leyenda[0].offsetWidth;
+
+                // Aplicar animación de entrada
+                $leyenda.addClass("leyenda-entering");
+
+                // Después de la entrada, esperar 1 segundo en el centro y luego salir
+                $leyenda.one("animationend", function () {
+                    $leyenda.removeClass("leyenda-entering");
+
+                    setTimeout(function () {
+                        $leyenda.addClass("leyenda-exiting");
+
+                        $leyenda.one("animationend", function () {
+                            window.location.href = "../pages/menu.html";
+                        });
+                    }, 1000); // 1 segundo extra en el centro
+                });
 
             } else {
                 $dlgLoginData.text("Datos Incorrectos:")
-                $dlgLogin.removeClass("d-none");
+                showAlert($dlgLogin, 3000);
                 $emailLogin.val("");
                 $claveLogin.val("");
             }
@@ -75,7 +90,7 @@ $(document).ready(function () {
     }
 
     $goLogin.on("click", function () {
-        $dlgLogin.addClass("d-none");
+        hideAlert($dlgLogin);
     });
 
 });

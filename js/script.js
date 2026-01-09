@@ -30,11 +30,11 @@ let MAX_HISTORY = 5;
 
 
 $goSend.on("click", function () {
-    $dlgUser.addClass("d-none");
+    hideAlert($dlgUser);
 });
 
 $goDeposit.on("click", function () {
-    $dlgDeposit.addClass("d-none");
+    hideAlert($dlgDeposit);
 });
 
 $(document).ready(function () {
@@ -77,14 +77,14 @@ $(document).ready(function () {
             $saldo.val(nuevoSaldo);
 
             $dlgDepositData.text(`$${monto} depositados correctamente.`);
-            $dlgDeposit.removeClass("d-none");
+            showAlert($dlgDeposit, 3000);
 
             $(".surf")[0]
                 .scrollIntoView({ behavior: "smooth", block: "start" });
 
             setTimeout(function () {
                 window.location.href = "../pages/menu.html";
-            }, 2000);
+            }, 3000);
         });
     }
 });
@@ -100,19 +100,45 @@ $(document).ready(function () {
         mostrarLeyenda($btn);
 
         setTimeout(function () {
-            window.location.href = $btn.attr("href");
-        }, 1000);
+            // Obtener la leyenda que se acaba de crear
+            const $leyenda = $(".leyenda-sesion").last();
+
+            // Aplicar animación de salida
+            $leyenda.removeClass("leyenda-entering").addClass("leyenda-exiting");
+
+            // Redirigir después de que termine la animación de salida
+            $leyenda.one("animationend", function () {
+                window.location.href = $btn.attr("href");
+            });
+        }, 1000); // 500ms de entrada
     });
 });
 
 function mostrarLeyenda($btn) {
     const $leyenda = $("<div>")
         .text(`Redirigiendo a ${$btn.data("title")}...`)
-        .addClass(
-            "leyenda-sesion"
-        )
+        .addClass("leyenda-sesion")
         .css("z-index", "9999");
     $("body").append($leyenda);
+
+    // Forzar reflow
+    void $leyenda[0].offsetWidth;
+
+    // Aplicar animación de entrada
+    $leyenda.addClass("leyenda-entering");
+
+    // Remover clase al terminar y esperar 1 segundo extra en el centro
+    const animationEnd = function () {
+        $leyenda.removeClass("leyenda-entering");
+        $leyenda.off("animationend", animationEnd);
+
+        // Esperar 1 segundo adicional en el centro antes de salir
+        setTimeout(function () {
+            $leyenda.addClass("leyenda-exiting");
+        }, 4000);
+    };
+
+    $leyenda.on("animationend", animationEnd);
 }
 
 $(document).ready(function () {
@@ -124,11 +150,11 @@ $(document).ready(function () {
 
     $btnLogout.on("click", function (e) {
         e.preventDefault();
-        $dlgLogout.removeClass("d-none");
+        showAlert($dlgLogout);
     });
 
     $cancelLogout.on("click", function () {
-        $dlgLogout.addClass("d-none");
+        hideAlert($dlgLogout);
     });
 
     $goLogout.on("click", function () {
@@ -191,16 +217,15 @@ $btnSend.on("click", function (e) {
         guardarUsuario(usuarioDestino);
     }
 
-    $dlgSend.addClass("d-none");
+    hideAlert($dlgSend);
     $inputAmount.val("");
 
     $sendOK.text(`$${monto} enviados a ${selectedContact.alias}.`);
-    $dlgCompleted.removeClass("d-none");
+    showAlert($dlgCompleted, 3000);
 
     setTimeout(function () {
-        $dlgCompleted.addClass("d-none");
         window.location.href = "../pages/menu.html";
-    }, 2000);
+    }, 3000);
 });
 
 function cargarContactos() {
@@ -277,27 +302,27 @@ $btnConfirm.on("click", function (e) {
     const saldoActual = usuario.saldo || 0;
 
     if (!selectedContact) {
-        $dlgUser.removeClass("d-none");
         $("#dlgData").text("Seleccione un contacto");
+        showAlert($dlgUser, 3000);
         return;
     }
 
     if (isNaN(monto) || monto < 1000 + COBRO_SERVICIO) {
-        $dlgUser.removeClass("d-none");
         $dlgData.text("Ingrese un monto válido");
+        showAlert($dlgUser, 3000);
         return;
     }
 
     if (saldoActual < monto + COBRO_SERVICIO) {
-        $dlgUser.removeClass("d-none");
         $dlgData.text("Saldo insuficiente");
+        showAlert($dlgUser, 3000);
         return;
     }
 
-    $dlgSend.removeClass("d-none");
+    showAlert($dlgSend);
 
     $cancelSend.on("click", function () {
-        $dlgSend.addClass("d-none");
+        hideAlert($dlgSend);
     });
 });
 
@@ -316,12 +341,11 @@ $(document).ready(function () {
     const $cancelDelHistorial = $("#cancelDelHistorial");
 
     $("#historyClean").on("click", function () {
-
-        $dlgHistorial.removeClass("d-none");
+        showAlert($dlgHistorial);
     });
 
     $cancelDelHistorial.on("click", function () {
-        $dlgHistorial.addClass("d-none");
+        hideAlert($dlgHistorial);
     });
 
     $btnDelHistorial.on("click", function (e) {
@@ -340,11 +364,11 @@ $(document).ready(function () {
         // redraw chart (if present) and refresh visible historial
         if (typeof dibujarGraficoSaldo === 'function') dibujarGraficoSaldo();
         cargarHistorial();
-        $dlgHistorial.addClass("d-none");
+        hideAlert($dlgHistorial);
 
         setTimeout(function () {
             window.location.href = "../pages/menu.html";
-        }, 2000);
+        }, 3000);
     });
 });
 

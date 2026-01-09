@@ -50,7 +50,7 @@ $(document).ready(function () {
 
     function mostrarError(mensaje) {
         $dlgRegisterData.text(mensaje);
-        $dlgRegister.removeClass("d-none");
+        showAlert($dlgRegister, 3000);
     };
 
     if ($registerForm.length) {
@@ -104,7 +104,7 @@ $(document).ready(function () {
     }
 
     $goRegister.on("click", function () {
-        $dlgRegister.addClass("d-none");
+        hideAlert($dlgRegister);
     });
 
 });

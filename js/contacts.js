@@ -63,20 +63,20 @@ $(document).ready(function () {
         const usuarioAlke = buscarUsuarioAlkePorCuenta(cuenta);
 
         if (usuarioAlke) {
-            $dlgAlkeDetected.removeClass("d-none");
+            showAlert($dlgAlkeDetected);
             $dlgAlkeData.text(`${usuarioAlke.nombre.toUpperCase()} ${usuarioAlke.apellido.toUpperCase()}`);
 
             $goAlkeAdd.on("click", function () {
                 $("#nombre").val(usuarioAlke.nombre).prop("readonly", true).addClass("bg-light border-success");
                 $("#apellido").val(usuarioAlke.apellido).prop("readonly", true).addClass("bg-light border-success");
-                $dlgAlkeDetected.addClass("d-none");
+                hideAlert($dlgAlkeDetected);
             });
         } else {
             $("#nombre").val("").prop("readonly", true).addClass("bg-light border-danger");
             $("#apellido").val("").prop("readonly", true).addClass("bg-light border-danger");
         }
         $cancelAlkeAdd.on("click", function () {
-            $dlgAlkeDetected.addClass("d-none");
+            hideAlert($dlgAlkeDetected);
             $("#cuenta, #banco").val("");
         });
     });
@@ -87,7 +87,7 @@ $(document).ready(function () {
 
     function mostrarError(mensaje) {
         $dlgContactData.text(mensaje);
-        $dlgContact.removeClass("d-none");
+        showAlert($dlgContact, 3000);
     };
 
     if ($formAddContact.length) {
@@ -146,18 +146,13 @@ $(document).ready(function () {
 
             modal.hide();
 
-            $dlgDelAdd.removeClass("d-none");
+            showAlert($dlgDelAdd, 3000);
             $dlgDelAddData.text(`"${alias.toUpperCase()}" añadid@ con éxito.`);
-
-            setTimeout(function () {
-                $dlgDelAdd.addClass("d-none");
-                return;
-            }, 2000);
         });
     }
 
     $goContact.on("click", function () {
-        $dlgContact.addClass("d-none");
+        hideAlert($dlgContact);
     });
 });
 
@@ -171,11 +166,11 @@ $(document).ready(function () {
         e.preventDefault();
 
         cargarContactos();
-        $dlgDelete.removeClass("d-none");
+        showAlert($dlgDelete);
     });
 
     $cancelDelete.on("click", function () {
-        $dlgDelete.addClass("d-none");
+        hideAlert($dlgDelete);
     });
 
     $goDelete.on("click", function (e) {
@@ -185,8 +180,8 @@ $(document).ready(function () {
         const $dlgDelAddData = $("#dlgDelAddData");
 
         if (!selectedContact) {
-            $dlgUser.removeClass("d-none");
             $("#dlgData").text("Seleccione un contacto");
+            showAlert($dlgUser, 3000);
             return;
         }
 
@@ -195,22 +190,21 @@ $(document).ready(function () {
 
         guardarUsuario(usuario);
 
-        $dlgDelAdd.removeClass("d-none");
+        showAlert($dlgDelAdd, 3000);
         $dlgDelAddData.text(`${selectedContact.alias} eliminado con éxito.`);
-        $dlgDelete.addClass("d-none");
+        hideAlert($dlgDelete);
 
         setTimeout(function () {
             cargarContactos();
             $contactSearchInput.val("");
             $contactList.empty();
             selectedContact = null;
-            $dlgDelAdd.addClass("d-none");
             return;
-        }, 2000);
+        }, 3000);
     });
 
     $goDelAdd.on("click", function () {
-        $dlgDelAdd.addClass("d-none");
+        hideAlert($dlgDelAdd);
     });
 });
 

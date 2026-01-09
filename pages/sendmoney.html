@@ -15,12 +15,12 @@
         <a class="btn btn-outline-primary position-absolute top-0 end-0 me-4 mt-3" href="../index.html"
             id="btnLogout">Logout</a>
     </div>
-    <div id="dlgCompleted" class="dlgOverlay d-none">
+    <div id="dlgCompleted" class="dlgOverlay">
         <div class="alert-success-custom center-stack justify-content-center" role="alert">
             <p id="sendOK" class="alert-content"></p>
         </div>
     </div>
-    <div id="dlgOverlay" class="dlgOverlay d-none">
+    <div id="dlgOverlay" class="dlgOverlay">
         <div class="alert-warning-custom center-stack" role="alert">
             <p class="mb-2">¿Seguro que deseas salir?</p>
             <div class="d-flex justify-content-center gap-2">
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div id="dlgSend" class="dlgOverlay d-none">
+    <div id="dlgSend" class="dlgOverlay">
         <div class="alert-warning-custom center-stack w-75" role="alert">
             <p class="mb-3">¿Confirmar el Envio?</p>
             <div class="d-flex justify-content-center gap-2">
@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-    <div id="dlgUser" class="dlgOverlay d-none">
+    <div id="dlgUser" class="dlgOverlay">
         <div class="alert-warning-custom d-flex flex-column gap-1" role="alert">
             <p class="alert-content" id="dlgData"></p>
             <div class="d-flex justify-content-center gap-2">
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div id="dlgDelAdd" class="dlgOverlay d-none">
+    <div id="dlgDelAdd" class="dlgOverlay">
         <div class="alert-info-custom d-flex flex-column gap-1" role="alert">
             <p class="alert-content" id="dlgDelAddData"></p>
             <div class="d-flex justify-content-center gap-2">
@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <div id="dlgDelete" class="dlgOverlay d-none">
+    <div id="dlgDelete" class="dlgOverlay">
         <div class="alert-warning-custom m-auto d-flex flex-column gap-1 w-75" style="max-width: 380px;" role="alert">
             <p class="mb-2 mx-auto">¿Eliminar Contacto?</p>
             <div class="d-flex justify-content-center gap-2 mt-2">
@@ -63,7 +63,7 @@
             </div>
         </div>
     </div>
-    <div id="dlgAlkeDetected" class="dlgOverlay d-none">
+    <div id="dlgAlkeDetected" class="dlgOverlay">
         <div class="alert-info-custom m-auto py-3 px-2 d-flex flex-column w-75 gap-1" style="max-width: 380px;"
             role="alert">
             <p class="alert-content">Usuario Alke Detectado</p>
@@ -135,7 +135,7 @@
                                     <button class="btn btn-primary" type="submit" id="addContact">Guardar
                                         Contacto</button>
                                 </form>
-                                <div id="dlgContact" class="dlgOverlay d-none">
+                                <div id="dlgContact" class="dlgOverlay">
                                     <div class="alert-warning-custom alert-stack" role="alert">
                                         <p class="alert-content" id="dlgContactData"></p>
                                         <div class="d-flex justify-content-center">
@@ -178,6 +178,7 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
         </script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="../js/alertAnimations.js"></script>
     <script src="../js/script.js"></script>
     <script src="../js/contacts.js"></script>
 
