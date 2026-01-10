@@ -159,6 +159,7 @@ $(document).ready(function () {
 
     $goLogout.on("click", function () {
         sessionStorage.removeItem("usuarioActivo");
+        localStorage.removeItem("usuarioGuardado");
         window.location.href = $btnLogout.attr("href");
     });
 });
