@@ -38,8 +38,6 @@ $(document).ready(function () {
 
             const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-            const usuario = usuarios.find(u => u.email === email && u.clave === clave);
-
             const error = validarRegistro({
                 email,
                 clave
@@ -49,6 +47,8 @@ $(document).ready(function () {
                 mostrarError(error);
                 return;
             }
+
+            const usuario = usuarios.find(u => u.email === email && u.clave === clave);
 
             if (usuario) {
 

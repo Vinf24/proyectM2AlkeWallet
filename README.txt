@@ -56,6 +56,8 @@ REVISION:
             Alias: Juan
             Nombre: Tercer
             Apellido: Estudio
+            Nombre Banco: otro
+            Numero Cuenta: cualquiera de 8 dígitos
 
         agregar otro contacto con el numero de cuenta del usuario Alke, nombre de banco, Alke para ser detectado en la lista de usuarios creados.
         comprobar que al ingresar el número d cuenta Alke más el nombre de banco, Alke, despliega alerta con la información del contacto encontrado.

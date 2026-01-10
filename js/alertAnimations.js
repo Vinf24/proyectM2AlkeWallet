@@ -14,6 +14,12 @@ function showAlert($alertElement, duration = 0) {
 
     if (!$element.length) return;
 
+    const prevTimeout = $element.data("alertTimeout");
+    if (prevTimeout) {
+        clearTimeout(prevTimeout);
+        $element.removeData("alertTimeout");
+    }
+
     // Mostrar el contenedor dlgOverlay
     $element.css('display', 'flex');
 
@@ -31,19 +37,17 @@ function showAlert($alertElement, duration = 0) {
     // Aplicar clase de entrada al contenido
     $content.addClass('alert-entering');
 
-    // Remover la clase de animación al terminar
-    const animationEnd = function () {
+    $content.one('animationend', () => {
         $content.removeClass('alert-entering');
-        $content.off('animationend', animationEnd);
-    };
-
-    $content.on('animationend', animationEnd);
+    });
 
     // Auto-cerrar después del tiempo especificado
     if (duration > 0) {
-        setTimeout(() => {
-            hideAlert($alertElement);
+        const timeoutId = setTimeout(() => {
+            hideAlert($element);
         }, duration);
+
+        $element.data("alertTimeout", timeoutId);
     }
 }
 
@@ -57,30 +61,30 @@ function hideAlert($alertElement, callback) {
 
     if (!$element.length) return;
 
+    const timeoutId = $element.data("alertTimeout");
+    if (timeoutId) {
+        clearTimeout(timeoutId);
+        $element.removeData("alertTimeout");
+    }
+
     // Obtener el contenido interno
     const $content = $element.children().first();
 
     if (!$content.length) {
         // Si no hay contenido, solo ocultar el contenedor
         $element.css('display', 'none');
-        if (callback && typeof callback === 'function') callback();
+        callback?.();
         return;
     }
 
     // Aplicar clase de salida al contenido
     $content.addClass('alert-exiting');
 
-    const animationEnd = function () {
+    $content.one('animationend', () => {
         $content.removeClass('alert-exiting alert-entering');
         $element.css('display', 'none');
-        $content.off('animationend', animationEnd);
-
-        if (callback && typeof callback === 'function') {
-            callback();
-        }
-    };
-
-    $content.on('animationend', animationEnd);
+        callback?.();
+    });
 }
 
 /**
