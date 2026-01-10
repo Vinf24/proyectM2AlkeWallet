@@ -30,15 +30,17 @@ REVISION:
 
 - planificar la revisión de las funcionalidades, para detectar posibles errores.
     - Index: Tratar de crear usuario, verificar alertas, no correo, formato correo, contraseña, etc.
+        Verificar como se ve en diferentes tamaños de pantalla, tambien con el formulario.
         Ingresar con el usuario recien creado.
         (correo@prueba.com / prueba1234) 
         Alias: Pedro
         Nombre: Primera
         Apellido: Prueba
 
-        - copiar la cuenta Alke generada, guardar aqui (), para añadirlo de contacto.
-        Verificar como se ve en diferentes tamaños de pantalla, tambien con el formulario.
+--- COMPLETADO ---
+
     - Menú: Ver que indica bien el saldo, gráfico funcional.
+        copiar la cuenta Alke generada, guardar aqui (69222373), para añadirlo de contacto.
         botones para ir a depositar, enviar dinero y ver ultimos movimientos, desplegando leyendas personalizadas.
         Verificar como se ve en diferentes tamaños de pantalla.
         Recordando que la cuenta Alke está copiada, probar el logout, crear otro usuario 
@@ -48,11 +50,14 @@ REVISION:
             Apellido: Ensayo
             
              - entrar con el nuevo usuario.
-        copiar cuenta Alke ingresar aqui ().
+        copiar cuenta Alke ingresar aqui (90941907).
+
+--- COMPLETADO ---
+
     - Deposit: Hacer un depósito, de 25.000, verificar alerta indicando el monto y reenviando al menú.
         Verificar como se ve en diferentes tamaños de pantalla.
     - Send: Agregar contacto, verificar cada alerta para cada elemento del formulario.
-            (correo@comun.com / comun1234) 
+            (correo@comun.com / comun1234)
             Alias: Juan
             Nombre: Tercer
             Apellido: Estudio
@@ -60,7 +65,7 @@ REVISION:
             Numero Cuenta: cualquiera de 8 dígitos
 
         agregar otro contacto con el numero de cuenta del usuario Alke, nombre de banco, Alke para ser detectado en la lista de usuarios creados.
-        comprobar que al ingresar el número d cuenta Alke más el nombre de banco, Alke, despliega alerta con la información del contacto encontrado.
+        comprobar que al ingresar el número de cuenta Alke más el nombre de banco, Alke, despliega alerta con la información del contacto encontrado.
         comprobar que si el nombre de banco es alke, y la cuenta no existe, despliega alerta.
         buscar los contactos recien añadidos y confirmar todos sus datos.
         verificar que los botones "Enviar" y "Borrar Contacto" son visibles solo si hay un contacto seleccionado.

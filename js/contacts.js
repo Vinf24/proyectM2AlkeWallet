@@ -11,6 +11,7 @@ const $labelContacts = $("#labelContacts");
 const $listCancel = $("#listCancel");
 
 let selectedContact = null;
+let alkeInexistenteMostrado = false;
 
 $(document).ready(function () {
     verificarSesion();
@@ -57,6 +58,7 @@ $(document).ready(function () {
         $("#nombre, #apellido").prop("readonly", false).removeClass("bg-light border-success border-danger");
 
         if (banco.toLowerCase() !== "alke" || cuenta.length !== 8) {
+            alkeInexistenteMostrado = false;
             return;
         }
 
@@ -66,18 +68,26 @@ $(document).ready(function () {
             showAlert($dlgAlkeDetected);
             $dlgAlkeData.text(`${usuarioAlke.nombre.toUpperCase()} ${usuarioAlke.apellido.toUpperCase()}`);
 
-            $goAlkeAdd.on("click", function () {
+            $goAlkeAdd.off("click").on("click", function () {
                 $("#nombre").val(usuarioAlke.nombre).prop("readonly", true).addClass("bg-light border-success");
                 $("#apellido").val(usuarioAlke.apellido).prop("readonly", true).addClass("bg-light border-success");
                 hideAlert($dlgAlkeDetected);
             });
         } else {
-            $("#nombre").val("").prop("readonly", true).addClass("bg-light border-danger");
-            $("#apellido").val("").prop("readonly", true).addClass("bg-light border-danger");
+            $("#nombre, #apellido, #cuenta")
+                .val("")
+                .addClass("bg-light border-danger");
+
+            if (!alkeInexistenteMostrado) {
+                $dlgContactData.text("Usuario Alke inexistente");
+                showAlert($dlgContact, 3000);
+                alkeInexistenteMostrado = true;
+            }
         }
         $cancelAlkeAdd.on("click", function () {
             hideAlert($dlgAlkeDetected);
             $("#cuenta, #banco").val("");
+            alkeInexistenteMostrado = false;
         });
     });
 
