@@ -1,6 +1,6 @@
 let paginaActual = 1;
 
-$historyList(document).ready(function () {
+$(document).ready(function () {
     verificarSesion();
     cargarHistorial();
 });

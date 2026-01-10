@@ -101,10 +101,10 @@ REVISION:
             - salen 2.000 (1.500 hacia Juan y 500 de tax)
             - salen 3.000 (2.500 hacia Pedro y 500 de tax)
     - Send: enviar 2.000 a Pedro, 3.000 a Juan, 3.500 a Pedro.
-    - Deposit: verificar que el saldo es de 10.000
+    - Deposit: verificar que el saldo es de 12.000
         depositar 4.000
         depositar 6.000
-        depositar 5.000
+        depositar 3.000
     -Send: enviar 2.000 a Pedro, 3.000 a Juan, 3.500 a Pedro.
     - Deposit: saldo de 15.000
         depositar 2.000
