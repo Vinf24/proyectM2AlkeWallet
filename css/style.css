@@ -216,7 +216,8 @@
     color: #fff;
 }
 
-.contact-item.active:hover {
+.contact-item.active:hover,
+.contact-item.active.kb-hover {
     background-color: #0b5ed7;
 }
 

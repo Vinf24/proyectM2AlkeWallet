@@ -332,6 +332,11 @@ $contactList.on("click", ".contact-item", function () {
     $dlgSelectedContact.removeClass("d-none").addClass("d-flex");
 });
 
+$contactList.on("mouseenter", ".contact-item", function () {
+    activeContactIndex = $(this).index();
+    $contactList.find(".contact-item").removeClass("kb-hover");
+});
+
 function buscarUsuarioAlkePorCuenta(cuenta) {
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
     return usuarios.find(u => u.numeroCuentaAlke === Number(cuenta)) || null;
