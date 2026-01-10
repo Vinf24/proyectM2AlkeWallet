@@ -67,6 +67,9 @@ REVISION:
         agregar otro contacto con el numero de cuenta del usuario Alke, nombre de banco, Alke para ser detectado en la lista de usuarios creados.
         comprobar que al ingresar el número de cuenta Alke más el nombre de banco, Alke, despliega alerta con la información del contacto encontrado.
         comprobar que si el nombre de banco es alke, y la cuenta no existe, despliega alerta.
+
+--- COMPLETADO ---
+
         buscar los contactos recien añadidos y confirmar todos sus datos.
         verificar que los botones "Enviar" y "Borrar Contacto" son visibles solo si hay un contacto seleccionado.
         tratar de enviar 500 a algún contacto, luego 1000, 1200, no deberia poder, verificar alertas.
