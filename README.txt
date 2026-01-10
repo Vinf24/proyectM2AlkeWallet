@@ -115,6 +115,10 @@ REVISION:
     - Historial: Veificar el historial y comprobar que funciona el sistema de páginas
         muestra 5 movimientos por página, que estén los 19 movimientos
         4 páginas, la última solo tiene 4.
+        Comprobar que los filtros funcionan:
+        - filtro: Depósito, solo items con entrada de dinero, color verde. Son 7 (1 página con 5 y otra con 2).
+        - filtro: Transferencia, solo items de salida de dinero, color rojo. Son 12 (2 páginas con 5 y otra con 2).
+        - filtro: Compra, ningún elemento, debe mostrar "No hay movimientos".
     
     Ahora entrar con Pedro y verificar que tiene 20.000, revisar también su historial.
 
