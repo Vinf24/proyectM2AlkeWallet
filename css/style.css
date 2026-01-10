@@ -202,6 +202,10 @@ hr.linea {
     margin: 0 auto;
 }
 
+.inicio {
+    margin-top: 7rem;
+}
+
 /* Animaciones para alertas */
 @keyframes slideUpBounce {
     0% {

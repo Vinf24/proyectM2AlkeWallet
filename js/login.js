@@ -4,7 +4,7 @@ $(document).ready(function () {
     const $claveLogin = $("#claveLogin");
     const $dlgLogin = $("#dlgLogin");
     const $goLogin = $("#goLogin");
-    const $chkUsuario = $("#chkUsuario");
+    const $chkRemember = $("#chkRemember");
 
     function validarRegistro(datos, usuarios) {
         const { email, clave } = datos;
@@ -34,6 +34,7 @@ $(document).ready(function () {
 
             const email = $emailLogin.val().trim();
             const clave = $claveLogin.val().trim();
+            recordar = $chkRemember.is(':checked');
 
             const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
@@ -53,13 +54,12 @@ $(document).ready(function () {
 
                 sessionStorage.setItem("usuarioActivo", usuario.id);
 
-                $($chkUsuario).on('change', function () {
-                    if ($(this).is(':checked')) {
-                        usuarioGuardado = sessionStorage.setItem("usuarioGuardado", usuario);
-                    } else {
-                        usuarioGuardado = null;
-                    }
-                });
+
+                if (recordar) {
+                    localStorage.setItem("usuarioGuardado", usuario.id);
+                } else {
+                    localStorage.removeItem("usuarioGuardado");
+                }
 
                 const $leyenda = $("<div>")
                     .text("Iniciando Sesión...")

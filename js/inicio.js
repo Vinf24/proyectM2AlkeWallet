@@ -1,18 +1,17 @@
-const usuarioActivo = sessionStorage.getItem("usuarioActivo");
 const menu = "../pages/menu.html";
-const login = "../index.html";
-
-if (usuarioActivo) {
-    window.location.href = menu;
-}
+const login = "../pages/login.html";
 
 $(document).ready(function () {
-    const usuarioGuardado = sessionStorage.getItem("usuarioGuardado");
+    let usuarioActivo = sessionStorage.getItem("usuarioActivo");
+    const usuarioGuardado = localStorage.getItem("usuarioGuardado");
+
+    let inicio = "";
+
     if (usuarioGuardado) {
-        usuarioActivo = sessionStorage.setItem("usuarioActivo", usuarioGuardado);
+        sessionStorage.setItem("usuarioActivo", usuarioGuardado);
         inicio = menu;
     } else {
-        usuarioActivo = null;
+        sessionStorage.removeItem("usuarioActivo");
         inicio = login;
     }
 
