@@ -11,6 +11,7 @@ const $labelContacts = $("#labelContacts");
 const $listCancel = $("#listCancel");
 
 let selectedContact = null;
+let activeContactIndex = -1;
 let alkeInexistenteMostrado = false;
 
 $(document).ready(function () {
@@ -220,6 +221,8 @@ $(document).ready(function () {
 
 function filtrarContactos(filtro = "") {
     const usuario = getUsuarioActivo();
+    activeContactIndex = -1;
+
     if (!usuario) return;
 
     const contactos = usuario.contactos || [];
@@ -269,6 +272,49 @@ $contactSearchInput.on("input", function () {
     $listCancel.removeClass("d-none");
 });
 
+$contactSearchInput.on("keydown", function (e) {
+    const $items = $contactList.find(".contact-item");
+    if (!$items.length) return;
+
+    switch (e.key) {
+        case "ArrowDown":
+            e.preventDefault();
+            activeContactIndex =
+                (activeContactIndex + 1) % $items.length;
+            break;
+
+        case "ArrowUp":
+            e.preventDefault();
+            activeContactIndex =
+                (activeContactIndex - 1 + $items.length) % $items.length;
+            break;
+
+        case "Enter":
+            e.preventDefault();
+            if (activeContactIndex >= 0) {
+                $items.eq(activeContactIndex).trigger("click");
+            }
+            return;
+
+        default:
+            return;
+
+        case "Escape":
+            $listCancel.trigger("click");
+            return;
+    }
+
+    // Actualizar visual
+    $items.removeClass("kb-hover");
+    const $activeItem = $items.eq(activeContactIndex);
+    $activeItem.addClass("kb-hover");
+
+    // Asegurar que el item sea visible (scroll)
+    $activeItem[0].scrollIntoView({
+        block: "nearest"
+    });
+});
+
 $listCancel.on("click", function () {
     resetBuscadorContactos();
 });
@@ -277,9 +323,10 @@ $contactList.on("click", ".contact-item", function () {
     const index = $(this).data("index");
     const usuario = getUsuarioActivo();
     const contactos = usuario.contactos || [];
+
     selectedContact = contactos[index];
 
-    $contactList.find(".contact-item").removeClass("active");
+    $contactList.find(".contact-item").removeClass("active kb-hover");
     $(this).addClass("active");
 
     $dlgSelectedContact.removeClass("d-none").addClass("d-flex");
@@ -291,6 +338,8 @@ function buscarUsuarioAlkePorCuenta(cuenta) {
 }
 
 function resetBuscadorContactos() {
+    activeContactIndex = -1;
+    $contactList.find(".contact-item").removeClass("active kb-hover");
     $contactSearchInput.val("");
     $contactList.addClass("d-none").empty();
     $labelContacts.removeClass("d-none");

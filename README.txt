@@ -71,6 +71,8 @@ REVISION:
 --- COMPLETADO ---
 
         buscar los contactos recien añadidos y confirmar todos sus datos.
+        comprobar que funciona el hover en la lista, también que con las teclas arriba/abajo simula el hover.
+        comprobar que la tecla Enter funciona como hacer click en el contacto y que Escape funciona como el botón Cancelar (Comprobar click y tecla).
         verificar que los botones "Enviar" y "Borrar Contacto" son visibles solo si hay un contacto seleccionado.
         tratar de enviar 500 a algún contacto, luego 1000, 1200, no deberia poder, verificar alertas.
         Verificar como se ve en diferentes tamaños de pantalla, tambien para la lista de contactos desplegada y el formulario.

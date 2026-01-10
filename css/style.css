@@ -197,8 +197,27 @@
 }
 
 .contact-item {
+    display: block;
+    width: 100%;
     padding: 0.5rem 0.75rem;
     line-height: 1.2;
+}
+
+.contact-item:hover {
+    background-color: #f1f3f5;
+}
+
+.contact-item.kb-hover {
+    background-color: #f1f3f5;
+}
+
+.contact-item.active {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.contact-item.active:hover {
+    background-color: #0b5ed7;
 }
 
 hr.linea {
