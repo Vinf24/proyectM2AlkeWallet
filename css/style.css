@@ -196,6 +196,12 @@
     line-height: 1.2;
 }
 
+hr.linea {
+    width: 75%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
 /* Animaciones para alertas */
 @keyframes slideUpBounce {
     0% {

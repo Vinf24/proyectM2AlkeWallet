@@ -4,7 +4,7 @@ $(document).ready(function () {
     const $claveLogin = $("#claveLogin");
     const $dlgLogin = $("#dlgLogin");
     const $goLogin = $("#goLogin");
-    const $dlgLoginData = $("#dlgLoginData");
+    const $chkUsuario = $("#chkUsuario");
 
     function validarRegistro(datos, usuarios) {
         const { email, clave } = datos;
@@ -23,7 +23,6 @@ $(document).ready(function () {
 
         const $dlgLogin = $("#dlgLogin");
         const $dlgLoginData = $("#dlgLoginData");
-        const $goLogin = $("#goLogin");
 
         function mostrarError(mensaje) {
             $dlgLoginData.text(mensaje);
@@ -38,7 +37,7 @@ $(document).ready(function () {
 
             const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-            const usuario = usuarios.find(u => (u.email === email || email === "correo@admin.com") && (u.clave === clave || clave === "admin"));
+            const usuario = usuarios.find(u => u.email === email && u.clave === clave);
 
             const error = validarRegistro({
                 email,
@@ -53,6 +52,14 @@ $(document).ready(function () {
             if (usuario) {
 
                 sessionStorage.setItem("usuarioActivo", usuario.id);
+
+                $($chkUsuario).on('change', function () {
+                    if ($(this).is(':checked')) {
+                        usuarioGuardado = sessionStorage.setItem("usuarioGuardado", usuario);
+                    } else {
+                        usuarioGuardado = null;
+                    }
+                });
 
                 const $leyenda = $("<div>")
                     .text("Iniciando Sesión...")
