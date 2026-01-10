@@ -182,6 +182,7 @@ $(document).ready(function () {
 
     $cancelDelete.on("click", function () {
         hideAlert($dlgDelete);
+        $listCancel.trigger("click");
     });
 
     $goDelete.on("click", function (e) {

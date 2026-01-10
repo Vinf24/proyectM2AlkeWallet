@@ -79,13 +79,21 @@ REVISION:
         enviar 1500 al usuario común, luego 2500 al usuario Alke, verificar alerta y que vuelve al Menú.
         verificar que el saldo es de 20.000 [25.000 - (1500-500) - (2500-500)]
         Volver a entrar a la página Send y probar el logout.
+
+--- COMPLETADO ---
+
     - Historial: entrar con (correo@prueba.com / prueba1234)
         verificar que el saldo es de 2.500, agregar de contacto al otro usuario Alke, tratar de enviar 2.200, no deberia, enviar 2.000.
         entrar al historial y verificar que indica la entrada de 2.500 desde Diego y que le enviaste 2.000, pero se restaron 500 de tax.
+        Los botones anterior y siguiente no deberian funcionar, ya que hay muy pocos items en el historial.
         verificar que el saldo ahora es de 0.000 y el grafico lo indica bien.
         volver al historial y borrarlo, volver a ver el gráfico.
     - Send: buscar a Diego de contacto seleccionarlo y borrarlo, verificar alerta de confirmación, cancelar, volver el contacto.
+        cancelar debería cerrar la lista de contactos.
         verificar que Diego sigue ahi, ahora si eliminarlo y verificar que ya no está.
+
+--- COMPLETADO ---
+
     - Historial: volver a verificar el historial, probar el Logout desde ahi.
         Ahora ingresar con (correo@contacto.com / alke1234).
         verificar que el historial es:

@@ -258,6 +258,7 @@ function cargarHistorial(filtro = "Todos", pagina = 1) {
 
     movimientos = movimientos.slice().reverse();
 
+    const total = movimientos.length;
     const inicio = (pagina - 1) * MAX_HISTORY;
     const visibles = movimientos.slice(inicio, inicio + MAX_HISTORY);
 
@@ -269,11 +270,9 @@ function cargarHistorial(filtro = "Todos", pagina = 1) {
                 No hay movimientos
             </li>
         `);
-        return;
-    }
-
-    $.each(visibles, function (_, mov) {
-        $historyList.append(`
+    } else {
+        $.each(visibles, function (_, mov) {
+            $historyList.append(`
             <li class="list-group-item py-1">
                 <div class="d-flex justify-content-between">
                     <strong>${mov.cliente}</strong>
@@ -289,7 +288,12 @@ function cargarHistorial(filtro = "Todos", pagina = 1) {
                 </div>
             </li>
         `);
-    });
+        });
+    }
+
+    $("#prevPage").prop("disabled", pagina === 1);
+    $("#nextPage").prop("disabled", inicio + MAX_HISTORY >= total);
+
 }
 
 $btnConfirm.on("click", function (e) {

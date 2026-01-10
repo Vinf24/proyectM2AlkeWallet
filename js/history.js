@@ -1,7 +1,8 @@
 let paginaActual = 1;
 
-$(document).ready(function () {
+$historyList(document).ready(function () {
     verificarSesion();
+    cargarHistorial();
 });
 
 $("#nextPage").on("click", function () {
