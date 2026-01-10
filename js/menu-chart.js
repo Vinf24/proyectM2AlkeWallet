@@ -88,7 +88,7 @@ $(document).ready(function () {
     if (!usuario) return;
 
     $("#bienvenida").text(`Bienvenido ${usuario.alias}`);
-    $("#numeroCuentaAlke").text(`Cuenta Alke: ${usuario.numeroCuentaAlke}`);
+    $("#numeroCuentaAlke").text(`N° Alke: ${usuario.numeroCuentaAlke}`);
 });
 
 $("#btnCopyCuenta").on("click", function () {
