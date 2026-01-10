@@ -99,3 +99,5 @@ REVISION:
     Ahora entrar con Pedro y verificar que tiene 20.000, revisar también su historial.
 
     Verificar que al entrar a cualquier página que no sea index, sin haber iniciado sesión, se redirija.
+    Desde Index, según como se inició sesión (checkbox: recordarme),
+    será redirigido hacia iniciar sesión, o hacia el menú con la cuenta ya conectada.
