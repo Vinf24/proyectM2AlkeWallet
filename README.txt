@@ -112,15 +112,18 @@ REVISION:
         depositar 30.000
     - Send: enviar 9.500 a Juan, 19.500 a Juan, 10.000 a Pedro y 9.000 a Juan.
     - Deposit: Verificar que el saldo es de 0
+
+--- COMPLETADO ---
+
     - Historial: Veificar el historial y comprobar que funciona el sistema de páginas
         muestra 5 movimientos por página, que estén los 19 movimientos
-        4 páginas, la última solo tiene 4.
+        4 páginas, todas completas.
         Comprobar que los filtros funcionan:
-        - filtro: Depósito, solo items con entrada de dinero, color verde. Son 7 (1 página con 5 y otra con 2).
+        - filtro: Depósito, solo items con entrada de dinero, color verde. Son 8 (1 página con 5 y otra con 3).
         - filtro: Transferencia, solo items de salida de dinero, color rojo. Son 12 (2 páginas con 5 y otra con 2).
         - filtro: Compra, ningún elemento, debe mostrar "No hay movimientos".
     
-    Ahora entrar con Pedro y verificar que tiene 20.000, revisar también su historial.
+    Ahora entrar con Pedro y verificar que tiene 21.000, revisar también su historial.
 
     Verificar que al entrar a cualquier página que no sea index, sin haber iniciado sesión, se redirija.
     Desde Index, según como se inició sesión (checkbox: recordarme),

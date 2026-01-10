@@ -6,6 +6,8 @@ const $btnConfirm = $("#btnConfirm");
 const $dlgUser = $("#dlgUser");
 const $goSend = $("#goSend");
 const $goDeposit = $("#goDeposit");
+const $goCompleted = $("#goCompleted");
+
 
 const $contactoModal = $("#contactoModal input");
 const $cancelForm = $("#cancelForm");
@@ -35,6 +37,12 @@ $goSend.on("click", function () {
 
 $goDeposit.on("click", function () {
     hideAlert($dlgDeposit);
+    window.location.href = "../pages/menu.html";
+});
+
+$goCompleted.on("click", function () {
+    hideAlert($dlgDeposit);
+    window.location.href = "../pages/menu.html";
 });
 
 $(document).ready(function () {
