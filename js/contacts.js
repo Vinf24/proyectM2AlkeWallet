@@ -149,8 +149,6 @@ $(document).ready(function () {
 
             guardarUsuario(usuario);
 
-            cargarContactos();
-
             $("#nombre, #apellido, #cuenta, #banco, #alias").val("");
 
             const modal = bootstrap.Modal.getInstance($("#contactoModal")[0]);
@@ -176,7 +174,6 @@ $(document).ready(function () {
     $delContact.on("click", function (e) {
         e.preventDefault();
 
-        cargarContactos();
         showAlert($dlgDelete);
     });
 
@@ -207,7 +204,6 @@ $(document).ready(function () {
         hideAlert($dlgDelete);
 
         setTimeout(function () {
-            cargarContactos();
             $contactSearchInput.val("");
             $contactList.empty();
             selectedContact = null;

@@ -18,7 +18,6 @@ $(document).ready(function () {
     const $leyenda = $("<div>")
         .text("Bienvenido...")
         .addClass("leyenda-sesion")
-        .css("z-index", "9999");
 
     $("body").append($leyenda);
 
