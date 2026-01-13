@@ -1,25 +1,24 @@
-const menu = "../pages/menu.html";
+const menu = "../pages/menu.html"; /* Declara variables que contienen rutas */
 const login = "../pages/login.html";
 
 $(document).ready(function () {
-    let usuarioActivo = sessionStorage.getItem("usuarioActivo");
     const usuarioGuardado = localStorage.getItem("usuarioGuardado");
 
-    let inicio = "";
+    let inicio = ""; /* Ruta para iniciar */
 
-    if (usuarioGuardado) {
+    if (usuarioGuardado) { /* Si detecta un usuario guardado, carga la ruta menú como inicio */
         sessionStorage.setItem("usuarioActivo", usuarioGuardado);
         inicio = menu;
-    } else {
+    } else { /* Si no, carga la página para iniciar sesión como inicio */
         sessionStorage.removeItem("usuarioActivo");
         inicio = login;
     }
 
-    const $leyenda = $("<div>")
-        .text("Bienvenido...")
-        .addClass("leyenda-sesion")
+    const $leyenda = $("<div>") /* Crea un elemento div */
+        .text("Bienvenido...") /* Le carga contenido */
+        .addClass("leyenda-sesion") /* Estilo css */
 
-    $("body").append($leyenda);
+    $("body").append($leyenda); /* Añade el div recien creado al body */
 
     // Forzar reflow
     void $leyenda[0].offsetWidth;

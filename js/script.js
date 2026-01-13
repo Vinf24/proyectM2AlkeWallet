@@ -18,6 +18,7 @@ const $dlgHistorial = $("#dlgHistorial"); /* Alerta para confirmar la eliminaci�
 
 let saldoChartInstance = null; /* El gráfico, variación del saldo en el tiempo */
 
+const $saldo = $("#saldo"); /* Contenedor para visualizar el saldo */
 const $entra = $(".entra"); /* Diferenciador del submit de los depósitos */
 const $sale = $(".sale"); /* Diferenciador del submit de los envios */
 
@@ -71,11 +72,11 @@ function mostrarLeyenda($btn) { /* Función recibe un botón */
 }
 
 function getUsuarioActivo() { /* Declara función */
-    const id = sessionStorage.getItem("usuarioActivo");
+    const id = sessionStorage.getItem("usuarioActivo"); /* Obtiene el usuario activo, es un id */
     if (!id) return null;
 
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-    return usuarios.find(u => u.id === Number(id)) || null;
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || []; /* Obtiene el array completo de usuarios */
+    return usuarios.find(u => u.id === Number(id)) || null; /* Obtiene el asuario que calza con el id */
 };
 
 function verificarSesion() {
@@ -92,31 +93,31 @@ function verificarSesion() {
 function cargarHistorial(filtro = "Todos", pagina = 1) { /* Declara función, recibe filtro y página */
     if (!$historyList.length) return; /* Verifica elemento contactList, en transactions.html es una lista */
 
-    const usuario = getUsuarioActivo();
+    const usuario = getUsuarioActivo(); /* Obtiene el usuario */
     if (!usuario) return;
 
-    let movimientos = usuario.historial || [];
+    let movimientos = usuario.historial || []; /* Extrae solo el historial del usuario */
 
-    if (filtro !== "Todos") {
-        movimientos = movimientos.filter(m => m.tipo === filtro);
+    if (filtro !== "Todos") { /* Si el filtro no es "todos" obtiene la clave tipo del historial y lo aplica como filtro */
+        movimientos = movimientos.filter(m => m.tipo === filtro); /* Para ver solo los movimientos de cierto tipo */
     }
 
-    movimientos = movimientos.slice().reverse();
+    movimientos = movimientos.slice().reverse(); /* Crea un array copia, para no alterar el original, luego se revierte para ver los elementos más recientes primero */
 
-    const total = movimientos.length;
-    const inicio = (pagina - 1) * MAX_HISTORY;
-    const visibles = movimientos.slice(inicio, inicio + MAX_HISTORY);
+    const total = movimientos.length; /* Total de elementos que pasan el filtro */
+    const inicio = (pagina - 1) * MAX_HISTORY; /* Número del elemento de inicio de cada página */
+    const visibles = movimientos.slice(inicio, inicio + MAX_HISTORY); /* Los elementos visbles van de "inicio" (determinado por página), hasta el último (inicio + cantidad de elementos que se van a ver) */
 
-    $historyList.empty();
+    $historyList.empty(); /* Limpia los elementos previos de la lista antes de cargarla */
 
-    if (visibles.length === 0) {
+    if (visibles.length === 0) { /* Si no hay elementos que mostrar queda indicado */
         $historyList.append(`
             <li class="list-group-item text-muted text-center">
                 No hay movimientos
             </li>
         `);
     } else {
-        $.each(visibles, function (_, mov) {
+        $.each(visibles, function (_, mov) { /* Estructura html con que se muestran los elementos visibles del historial */
             $historyList.append(`
             <li class="list-group-item py-1">
                 <div class="d-flex justify-content-between">
@@ -136,24 +137,23 @@ function cargarHistorial(filtro = "Todos", pagina = 1) { /* Declara función, re
         });
     }
 
-    $("#prevPage").prop("disabled", pagina === 1);
-    $("#nextPage").prop("disabled", inicio + MAX_HISTORY >= total);
-
+    $("#prevPage").prop("disabled", pagina === 1); /* En la primera página no funciona botón "anterior" */
+    $("#nextPage").prop("disabled", inicio + MAX_HISTORY >= total); /* Si el ultimo elemeto de la página es el último del todo, botón "siguiente" no funciona */
 }
 
-function guardarUsuario(usuarioActualizado) {
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+function guardarUsuario(usuarioActualizado) { /* Declara función, recibe datos de usuario en un array */
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || []; /* Carga el array total de usuarios */
 
-    const index = usuarios.findIndex(u => u.id === usuarioActualizado.id);
+    const index = usuarios.findIndex(u => u.id === usuarioActualizado.id); /* El usuario actualizado parte del usuario activo, asi que tiene su id, el cual usa para encontrar el usuario a actualizar */
     if (index === -1) return;
 
-    usuarios[index] = usuarioActualizado;
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    usuarios[index] = usuarioActualizado; /* Carga el usuario actualizado sobre el usuario en el array */
+    localStorage.setItem("usuarios", JSON.stringify(usuarios)); /* Actualiza el JSON (localStorage) con el array anterior pero como un string JSON */
 }
 
-function buscarUsuarioPorCuenta(numeroCuentaAlke) {
+function buscarUsuarioPorCuenta(numeroCuentaAlke) { /* Declara función, recibe la clave numeroCuentaAlke del usuario/contacto */
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-    return usuarios.find(u => u.numeroCuentaAlke === Number(numeroCuentaAlke)) || null;
+    return usuarios.find(u => u.numeroCuentaAlke === Number(numeroCuentaAlke)) || null; /* Entrega el usuario que tenga el numeroCuentaAlke buscado */
 }
 
 $(document).ready(function () {
@@ -173,14 +173,14 @@ $(document).ready(function () {
                 return;
             }
 
-            const usuario = getUsuarioActivo();
-            const saldoActual = usuario.saldo || 0;
-            const nuevoSaldo = saldoActual + monto;
-            usuario.saldo = nuevoSaldo;
+            const usuario = getUsuarioActivo(); /* Entrega el usuario con el id del usuario activo */
+            const saldoActual = usuario.saldo || 0; /* Obtiene la clave saldo del usuario */
+            const nuevoSaldo = saldoActual + monto; /* Declara el nuevo saldo obtenido tras la operación */
+            usuario.saldo = nuevoSaldo; /* Actualiza el saldo del usuario */
 
-            usuario.historial = usuario.historial || [];
+            usuario.historial = usuario.historial || []; /* Se asegura de no entregar un valor que genere errores (Undefined, null...) */
 
-            usuario.historial.push({
+            usuario.historial.push({ /* Carga datos al historial del usuario */
                 cliente: "Propio",
                 monto: monto,
                 fecha: new Date().toLocaleDateString("es-CL"),
@@ -188,30 +188,30 @@ $(document).ready(function () {
                 detalle: `+$${monto}`
             });
 
-            guardarUsuario(usuario);
+            guardarUsuario(usuario); /* Le carga al usuario, el usuario actualizado y lo manda al localStorage */
 
-            $amount.val("");
-            $saldo.val(nuevoSaldo);
+            $amount.val(""); /* Limpia el input */
+            $saldo.val(nuevoSaldo); /* Actualiza el mostrador de saldo */
 
-            $dlgDepositData.text(`$${monto} depositados correctamente.`);
-            showAlert($dlgDeposit, 3000);
+            $dlgDepositData.text(`$${monto} depositados correctamente.`); /* Define el contenido de la alerta al cmpletar un depósito */
+            showAlert($dlgDeposit, 3000); /* Despliega alerta y espera 3 segundos antes de retirarla */
 
-            setTimeout(function () {
+            setTimeout(function () { /* Espera 3 segundos antes de redirigir de vuelta al menú */
                 window.location.href = "../pages/menu.html";
             }, 3000);
         });
     }
 });
 
-$(document).ready(function () {
+$(document).ready(function () { /* Función estandar para todos los botones con clase surf */
     const $btnSurf = $(".surf");
 
-    $btnSurf.on("click", function (e) {
-        e.preventDefault();
+    $btnSurf.on("click", function (e) { /* Detecta el click en el botón */
+        e.preventDefault(); /* Previene comportamiento por default (redirige a cierta página)*/
 
-        const $btn = $(this);
+        const $btn = $(this); /* Declara el mismo botón */
 
-        mostrarLeyenda($btn);
+        mostrarLeyenda($btn); /* Le aplica función mostrarLeyenda: Extrae data-title, lo utiliza para crear contenido de la alerta y mostrarla */
 
         setTimeout(function () {
             // Obtener la leyenda que se acaba de crear
@@ -224,63 +224,60 @@ $(document).ready(function () {
             $leyenda.one("animationend", function () {
                 window.location.href = $btn.attr("href");
             });
-        }, 1000); // 500ms de entrada
+        }, 1000); // Espera un segundo, si pasa ese tiempo fuerza la salida de la alerta y redirige
     });
 });
 
 $(document).ready(function () {
 
-    const $btnLogout = $("#btnLogout");
-    const $goLogout = $("#goLogout");
-    const $cancelLogout = $("#cancelLogout");
-    const $dlgLogout = $("#dlgOverlay");
+    const $btnLogout = $("#btnLogout"); /* Botón para cerrar sesión */
+    const $dlgLogout = $("#dlgOverlay"); /* Alerta de confirmación para cerrar sesión, utiliza dlgOverlay que está estandarizado para ocupar en diversos casos */
+    const $goLogout = $("#goLogout"); /* En la alerta de confirmación para cerrar sesión, es el botón para confirmar */
+    const $cancelLogout = $("#cancelLogout"); /* En la alerta de confirmación, calcela el cierre de sesión */
 
-    $btnLogout.on("click", function (e) {
-        e.preventDefault();
-        showAlert($dlgLogout);
+    $btnLogout.on("click", function (e) { /* Detecta el click */
+        e.preventDefault(); /* Previene comportamiento por default, en caso de haberlo */
+        showAlert($dlgLogout); /* Despliega la alerta de confirmación */
     });
 
-    $cancelLogout.on("click", function () {
-        hideAlert($dlgLogout);
+    $cancelLogout.on("click", function () { /* Detecta el click en el botón para cancelar el cierre de sesión */
+        hideAlert($dlgLogout); /* Cierra la alerta de confirmación del cierre de sesión */
     });
 
-    $goLogout.on("click", function () {
-        sessionStorage.removeItem("usuarioActivo");
-        localStorage.removeItem("usuarioGuardado");
-        window.location.href = $btnLogout.attr("href");
+    $goLogout.on("click", function () { /* Detecta el click en el botón que confirma el cierre de sesión */
+        sessionStorage.removeItem("usuarioActivo"); /* Limpia el usuario activo (determinado al iniciar sesión) */
+        localStorage.removeItem("usuarioGuardado"); /* Limpia el usuario guardado (retenido al marcar "recordarme") */
+        window.location.href = $btnLogout.attr("href"); /* Redirige al inicio (index) */
     });
 });
 
-const $saldo = $("#saldo");
-
-if ($saldo.length) {
-    const usuario = getUsuarioActivo();
-    $saldo.val(usuario?.saldo || 0);
+if ($saldo.length) { /* Al detectar el contenedor para el saldo */
+    const usuario = getUsuarioActivo(); /* Carga el usuario */
+    $saldo.val(usuario?.saldo || 0); /* Extrae su clave saldo y la despliega como el valor del input contenedor */
 }
 
-$btnSend.on("click", function (e) {
-    e.preventDefault();
+$btnSend.on("click", function (e) { /* Detecta click en el botón para confirmar un envio */
+    e.preventDefault(); /* Previene comportamiento por default */
 
-    const monto = Number($inputAmount.val());
-    const $dlgCompleted = $("#dlgCompleted");
-    const $dlgSend = $("#dlgSend");
-    const $sendOK = $("#sendOK");
-    const $dlgData = $("#dlgData");
-    const usuario = getUsuarioActivo();
-    const saldoActual = usuario.saldo || 0;
+    const monto = Number($inputAmount.val()); /* Obtiene el monto ingresado como un numero */
+    const $dlgCompleted = $("#dlgCompleted"); /* Alerta estandar */
+    const $dlgSend = $("#dlgSend"); /* Alerta de confirmación de envio */
+    const $dlgSendData = $("#dlgSendData"); /* Contenido de la alerta resumen (monto y contacto) */
+    const usuario = getUsuarioActivo(); /* Obtiene el usuario */
+    const saldoActual = usuario.saldo || 0; /* Extrae su saldo */
 
-    const nuevoSaldo = saldoActual - monto - COBRO_SERVICIO;
+    const nuevoSaldo = saldoActual - monto - COBRO_SERVICIO; /* Resta al saldo, el monto enviado y el cobro servicio */
 
-    usuario.saldo = nuevoSaldo;
-    usuario.historial = usuario.historial || [];
+    usuario.saldo = nuevoSaldo; /* Actualiza el saldo del usuario */
+    usuario.historial = usuario.historial || []; /* Asegura historial válido */
 
-    let usuarioDestino = null;
+    let usuarioDestino = null; /* Declara el contacto destino del envio */
 
-    if (selectedContact.banco.toLowerCase() === "alke" && selectedContact.cuenta) {
-        usuarioDestino = buscarUsuarioPorCuenta(selectedContact.cuenta);
+    if (selectedContact.banco.toLowerCase() === "alke" && selectedContact.cuenta) { /* Verifica que el contacto objetivo sea usuario Alke y tenga cuenta */
+        usuarioDestino = buscarUsuarioPorCuenta(selectedContact.cuenta); /* Encuentra el usuario Alke registrado, cuya cuneta calce con la del contacto destino del envio */
     }
 
-    usuario.historial.push({
+    usuario.historial.push({ /* Carga datos al historial del usuario activo del envio */
         cliente: selectedContact.alias,
         monto: -(monto + COBRO_SERVICIO),
         fecha: new Date().toLocaleDateString("es-CL"),
@@ -288,9 +285,9 @@ $btnSend.on("click", function (e) {
         detalle: `- $${monto} <span class="text-muted small ms-2">-$${COBRO_SERVICIO} (tax)</span>`
     });
 
-    guardarUsuario(usuario);
+    guardarUsuario(usuario); /* Guarda los datos del usuario activo del array al JSON del localStorage */
 
-    if (usuarioDestino) {
+    if (usuarioDestino) { /* Verifica que hay usuario destino y le carga datos */
         usuarioDestino.saldo = (usuarioDestino.saldo || 0) + monto;
         usuarioDestino.historial = usuarioDestino.historial || [];
 
@@ -302,95 +299,97 @@ $btnSend.on("click", function (e) {
             detalle: `+ $${monto}`
         });
 
-        guardarUsuario(usuarioDestino);
+        guardarUsuario(usuarioDestino); /* Guarda los datos del usuario destino del array al JSON */
     }
 
-    hideAlert($dlgSend);
-    $inputAmount.val("");
+    hideAlert($dlgSend); /* Esconde la alerta de confirmación */
+    $inputAmount.val(""); /* Limpia el input del monto a enviar */
 
-    $sendOK.text(`$${monto} enviados a ${selectedContact.alias}.`);
-    showAlert($dlgCompleted, 3000);
+    $dlgSendData.text(`$${monto} enviados a ${selectedContact.alias}.`); /* Define el contenido de la alerta resumen de un envio completado */
+    showAlert($dlgCompleted, 3000); /* Despliega la alerta durante 3 segundos */
 
-    setTimeout(function () {
+    setTimeout(function () { /* Espera 3 segundos antes de redirigir al menú */
         window.location.href = "../pages/menu.html";
     }, 3000);
 });
 
-$cancelForm.on("click", function () {
+$cancelForm.on("click", function () { /* Limpia el formulario al cancelarlo */
     $("#nombre, #apellido, #cuenta, #banco, #alias").val("");
 });
 
-$closeForm.on("click", function () {
+$closeForm.on("click", function () { /* Limpia el formulario al cerrarlo */
     $("#nombre, #apellido, #cuenta, #banco, #alias").val("");
 });
 
-$btnConfirm.on("click", function (e) {
+$btnConfirm.on("click", function (e) { /* Detecta el click en el botón "Enviar" */
     e.preventDefault();
 
-    const monto = Number($inputAmount.val());
-    const $dlgSend = $("#dlgSend");
-    const $cancelSend = $("#cancelSend");
-    const $dlgData = $("#dlgData");
-    const usuario = getUsuarioActivo();
-    const saldoActual = usuario.saldo || 0;
+    const monto = Number($inputAmount.val()); /* Recibe el monto a enviar */
+    const $dlgSend = $("#dlgSend"); /* Alerta de confirmación del envio */
+    const $cancelSend = $("#cancelSend"); /* Botón para cancelar el envio en la confirmación */
+    const $dlgData = $("#dlgData"); /* Contenido de la alerta estandar para el formulario de envio */
+    const usuario = getUsuarioActivo(); /* Obtiene el usuario activo */
+    const saldoActual = usuario.saldo || 0; /* Extrae saldo del usuario */
 
-    if (!selectedContact) {
+
+    if (!selectedContact) { /* Si no ha seleccionado un contacto despliega alerta */
         $("#dlgData").text("Seleccione un contacto");
         showAlert($dlgUser, 3000);
         return;
     }
 
-    if (isNaN(monto) || monto < 1000 + COBRO_SERVICIO) {
+    if (isNaN(monto) || monto < 1000 + COBRO_SERVICIO) { /* Si no está definido un monto o es menor a 1.500 despliega alerta */
         $dlgData.text("Ingrese un monto válido");
         showAlert($dlgUser, 3000);
         return;
     }
 
-    if (saldoActual < monto + COBRO_SERVICIO) {
+    if (saldoActual < monto + COBRO_SERVICIO) { /* Si el saldo es insuficiente despliega alerta */
         $dlgData.text("Saldo insuficiente");
         showAlert($dlgUser, 3000);
         return;
     }
 
-    showAlert($dlgSend);
+    showAlert($dlgSend); /* Despliega alerta de confirmación */
 
-    $cancelSend.on("click", function () {
-        hideAlert($dlgSend);
+
+    $cancelSend.on("click", function () { /* Detecta el click en el botón para cancelar el envio */
+        hideAlert($dlgSend); /* Cierra la alerta de confirmación del envio */
     });
 });
 
 $(document).ready(function () {
 
-    const $btnDelHistorial = $("#btnDelHistorial");
-    const $cancelDelHistorial = $("#cancelDelHistorial");
+    const $btnDelHistorial = $("#btnDelHistorial"); /* Botón para confirmar limpiar el historial */
+    const $cancelDelHistorial = $("#cancelDelHistorial"); /* Botón para cancelar la limpieza de historial */
 
-    $("#historyClean").on("click", function () {
-        showAlert($dlgHistorial);
+
+    $("#historyClean").on("click", function () { /* Detecta el click en el botón para limpiar el historial */
+        showAlert($dlgHistorial); /* Despliega alerta de confirmación */
     });
 
-    $cancelDelHistorial.on("click", function () {
-        hideAlert($dlgHistorial);
+    $cancelDelHistorial.on("click", function () { /* Detecta el click en el botón para cancelar la limpieza de historial */
+        hideAlert($dlgHistorial); /* Cierra la alerta de confirmación */
     });
 
-    $btnDelHistorial.on("click", function (e) {
+    $btnDelHistorial.on("click", function (e) { /* Detecta el click en el botón para confirmar la limpieza de historial */
         e.preventDefault();
 
-        const usuario = getUsuarioActivo();
-        const saldoActual = usuario.saldo || 0;
-        // store current balance as saldoBase in the user object so the chart
-        // starts from the real balance after cleaning history
-        usuario.saldoBase = saldoActual;
-        localStorage.setItem("saldoBase", saldoActual);
+        const usuario = getUsuarioActivo(); /* Obtiene el usuario */
+        const saldoActual = usuario.saldo || 0; /* Extrae saldo del usuario */
+
+        usuario.saldoBase = saldoActual; /* Carga el saldo actual a la clave saldoBase del usuario */
+        localStorage.setItem("saldoBase", saldoActual); /* Lo guarda en el localStorage */
 
         usuario.historial = [];
-        guardarUsuario(usuario);
+        guardarUsuario(usuario); /* Actualiza los datos a nivel de usuario hasta el localstorage */
 
-        // redraw chart (if present) and refresh visible historial
-        if (typeof dibujarGraficoSaldo === 'function') dibujarGraficoSaldo();
-        cargarHistorial();
-        hideAlert($dlgHistorial);
+        if (typeof dibujarGraficoSaldo === 'function') dibujarGraficoSaldo(); /* Si procede aplica la funcion que dibuja el gráfico */
+        cargarHistorial(); /* Recarga la visión del historial */
+        hideAlert($dlgHistorial); /* Cierra la alerta de confirmación */
 
-        setTimeout(function () {
+
+        setTimeout(function () { /* Espera 3 segundos antes de redirigir al menú */
             window.location.href = "../pages/menu.html";
         }, 3000);
     });

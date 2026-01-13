@@ -1,24 +1,24 @@
-$(document).ready(function () {
+$(document).ready(function () { /* Si no hay usuario declarado vuelve a index */
     verificarSesion();
 });
 
-function obtenerDatosSaldo() {
-    const usuario = getUsuarioActivo();
-    if (!usuario) return { labels: [], data: [] };
+function obtenerDatosSaldo() { /* Declara función */
+    const usuario = getUsuarioActivo(); /* Obtiene el usuario */
+    if (!usuario) return { labels: [], data: [] }; /* Si no hay usuario entrega arrays vacios */
 
-    const movimientos = usuario.historial || [];
-    const saldoBase = Number(usuario.saldoBase) || 0;
-
-    const labels = [];
+    const labels = []; /* Si hay usuario, tambien, pero continuando el código */
     const data = [];
 
-    let saldo = saldoBase;
+    const movimientos = usuario.historial || []; /* Ontiene datos del usuario, historial y saldoBase (primer punto del gráfico) */
+    const saldoBase = Number(usuario.saldoBase) || 0;
 
-    labels.push("Saldo Inicial");
+    let saldo = saldoBase; /* Declara saldo  */
+
+    labels.push("Saldo Inicial"); /* El punto inicial, antes de llevar registros, en vez de fecha indica que es el saldo inicial */
     data.push(saldo);
 
-    movimientos.forEach(mov => {
-        saldo += Number(mov.monto);
+    movimientos.forEach(mov => { /* Para cada movimiento carga fecha y saldo, armando el gráfico */
+        saldo += Number(mov.monto); /* Para obtener el saldo de cada momento, aplica el monto de la transacción */
         labels.push(mov.fecha);
         data.push(saldo);
     });
@@ -27,7 +27,7 @@ function obtenerDatosSaldo() {
 }
 
 function dibujarGraficoSaldo() {
-    const canvas = document.getElementById("saldoChart");
+    const canvas = document.getElementById("saldoChart"); /* Obtiene el elemento a partir de su id */
     if (!canvas) return;
 
     const { labels, data } = obtenerDatosSaldo();
@@ -37,17 +37,17 @@ function dibujarGraficoSaldo() {
         return;
     }
 
-    // ✔️ HAY DATOS → mostrar canvas
+    // Si hay datos muestra canvas
     canvas.style.display = "block";
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d"); /* Contexto de dibujo */
 
-    if (saldoChartInstance) {
+    if (saldoChartInstance) { /* Para evitar duplicados, lo "actualiza" si ya existe */
         saldoChartInstance.data.labels = labels;
         saldoChartInstance.data.datasets[0].data = data;
         saldoChartInstance.update();
     } else {
-        saldoChartInstance = new Chart(ctx, {
+        saldoChartInstance = new Chart(ctx, { /* Si no, crea uno */
             type: "line",
             data: {
                 labels,
@@ -79,25 +79,25 @@ function dibujarGraficoSaldo() {
     }
 }
 
-$(document).ready(function () {
+$(document).ready(function () { /* Dibuja el gráfico una vez la página esta cargada */
     dibujarGraficoSaldo();
 });
 
 $(document).ready(function () {
-    const usuario = getUsuarioActivo();
+    const usuario = getUsuarioActivo(); /* Entrega el usuario activo */
     if (!usuario) return;
 
-    $("#bienvenida").text(`Bienvenido ${usuario.alias}`);
-    $("#numeroCuentaAlke").text(`N° Alke: ${usuario.numeroCuentaAlke}`);
+    $("#bienvenida").text(`Bienvenido ${usuario.alias}`); /* Bienvenida personalizada */
+    $("#numeroCuentaAlke").text(`N° Alke: ${usuario.numeroCuentaAlke}`); /* Muestra la cuenta Alke */
 });
 
-$("#btnCopyCuenta").on("click", function () {
+$("#btnCopyCuenta").on("click", function () { /* Detecta click en botón copiar */
     const cuenta = getUsuarioActivo()?.numeroCuentaAlke;
     if (!cuenta) return;
 
-    navigator.clipboard.writeText(cuenta.toString());
+    navigator.clipboard.writeText(cuenta.toString()); /* Escribe el numero de cuenta en el portapapeles */
 
-    $(this).text("Copiado ✔");
+    $(this).text("Copiado ✔"); /* Cambia el contenido del botón temporalmente */
     setTimeout(() => {
         $(this).text("Copiar");
     }, 1500);
